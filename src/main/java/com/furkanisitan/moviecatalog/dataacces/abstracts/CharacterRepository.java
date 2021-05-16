@@ -1,5 +1,6 @@
 package com.furkanisitan.moviecatalog.dataacces.abstracts;
 
+import com.furkanisitan.moviecatalog.entities.concretes.Character;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
