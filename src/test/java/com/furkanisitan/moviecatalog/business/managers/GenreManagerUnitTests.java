@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class GenreManagerTests {
+public class GenreManagerUnitTests {
 
     @InjectMocks
     GenreManager genreManager;

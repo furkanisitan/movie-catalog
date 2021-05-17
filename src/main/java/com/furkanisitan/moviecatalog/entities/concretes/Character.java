@@ -1,6 +1,7 @@
 package com.furkanisitan.moviecatalog.entities.concretes;
 
 import com.furkanisitan.moviecatalog.entities.keys.CharacterKey;
+import com.furkanisitan.moviecatalog.entities.keys.MovieGenreKey;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,3 +27,4 @@ public class Character {
     @Column(name = "role_name", nullable = false, length = 100)
     private String roleName;
 }
+
