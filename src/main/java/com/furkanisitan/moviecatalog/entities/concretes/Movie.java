@@ -10,7 +10,7 @@ import java.util.Set;
 @Entity
 @Table(name = "movies")
 @Data
-public class Movie {
+public class Movie implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

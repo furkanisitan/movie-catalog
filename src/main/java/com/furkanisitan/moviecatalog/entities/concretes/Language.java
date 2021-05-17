@@ -9,7 +9,7 @@ import java.util.Set;
 @Entity
 @Table(name = "languages")
 @Data
-public class Language {
+public class Language implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

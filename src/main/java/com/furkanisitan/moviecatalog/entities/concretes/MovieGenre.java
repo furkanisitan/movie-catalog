@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "movie_genre")
 @Data
-public class MovieGenre {
+public class MovieGenre implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @EmbeddedId
     private MovieGenreKey id;

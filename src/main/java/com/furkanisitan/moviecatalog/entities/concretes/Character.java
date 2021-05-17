@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "characters")
 @Data
-public class Character {
+public class Character implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @EmbeddedId
     private CharacterKey id;

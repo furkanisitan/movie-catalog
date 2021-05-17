@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Genre {
+public class Genre implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
