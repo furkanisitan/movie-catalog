@@ -18,7 +18,6 @@ public class GenreManagerIntegrationTests {
     private MovieRepository movieRepository;
     private MovieGenreRepository movieGenreRepository;
 
-
     @Autowired
     public GenreManagerIntegrationTests(GenreManager genreManager, MovieRepository movieRepository, MovieGenreRepository movieGenreRepository) {
         this.genreManager = genreManager;
@@ -26,18 +25,23 @@ public class GenreManagerIntegrationTests {
         this.movieGenreRepository = movieGenreRepository;
     }
 
+    /**
+     * Genre kaydı silindiğinde many-to-many ilişkileri tutan MovieGenre kayıtları da silinmeli.
+     * Ancak ilişkili olduğu Movie kayıtları silinmemeli.
+     */
     @Test
     public void delete_ByDeletedGenreId_NotRemoveAssociatedMovie() {
 
         var deletedGenreId = 1;
         var movieGenre = movieGenreRepository.getByIdGenreId(deletedGenreId).orElseThrow();
+        var movieId = movieGenre.getId().getMovieId();
 
         genreManager.delete(deletedGenreId);
 
-        var movieId = movieGenre.getId().getMovieId();
         var movie = movieRepository.findById(movieId);
+        var deletedMovieGenre = movieGenreRepository.getByIdGenreId(deletedGenreId);
 
         assertTrue(movie.isPresent());
+        assertTrue(deletedMovieGenre.isEmpty());
     }
-
 }

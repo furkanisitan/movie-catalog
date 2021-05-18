@@ -6,6 +6,7 @@ import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieGenreRepository;
 import com.furkanisitan.moviecatalog.entities.concretes.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +43,7 @@ public class GenreManager implements GenreService {
         genreRepository.save(genre);
     }
 
+    @Transactional
     @Override
     public void delete(int id) {
         movieGenreRepository.deleteAllByIdGenreId(id);
