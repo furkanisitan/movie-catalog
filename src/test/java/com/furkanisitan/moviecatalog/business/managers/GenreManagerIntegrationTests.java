@@ -33,13 +33,14 @@ public class GenreManagerIntegrationTests {
     public void delete_ByDeletedGenreId_NotRemoveAssociatedMovie() {
 
         var deletedGenreId = 1;
-        var movieGenre = movieGenreRepository.getByIdGenreId(deletedGenreId).orElseThrow();
+        var genre = genreManager.get(deletedGenreId).orElseThrow();
+        var movieGenre = movieGenreRepository.findAllByIdGenreId(deletedGenreId).stream().findFirst().orElseThrow();
         var movieId = movieGenre.getId().getMovieId();
 
-        genreManager.delete(deletedGenreId);
+        genreManager.delete(genre);
 
         var movie = movieRepository.findById(movieId);
-        var deletedMovieGenre = movieGenreRepository.getByIdGenreId(deletedGenreId);
+        var deletedMovieGenre = movieGenreRepository.findAllByIdGenreId(deletedGenreId);
 
         assertTrue(movie.isPresent());
         assertTrue(deletedMovieGenre.isEmpty());

@@ -15,5 +15,5 @@ public interface GenreService {
 
     void update(Genre genre);
 
-    void delete(int id);
+    void delete(Genre genre);
 }

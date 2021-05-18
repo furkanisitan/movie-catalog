@@ -45,8 +45,8 @@ public class GenreManager implements GenreService {
 
     @Transactional
     @Override
-    public void delete(int id) {
-        movieGenreRepository.deleteAllByIdGenreId(id);
-        genreRepository.deleteById(id);
+    public void delete(Genre genre) {
+        movieGenreRepository.deleteAllByIdGenreId(genre.getId());
+        genreRepository.delete(genre);
     }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
@@ -10,8 +11,114 @@
 <body>
 
 <div layout:fragment="content">
-    
+
+    <div th:switch="${#lists.isEmpty(genres)}" class="row">
+
+        <div class="col-md-6 mx-auto">
+
+            <h2 th:case="true">No genres yet!</h2>
+
+            <div th:case="false">
+                <h2 class="my-5">Genre List</h2>
+
+                <button class="btn btn-sm btn-success" onclick="createGenre()">
+                    Create
+                </button>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="genre, iter : ${genres}">
+                        <td scope="row" th:text="${iter.index + 1}"></td>
+                        <td th:text="${genre.name}"></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top"
+                                    title="edit" th:attr="onclick=|updateGenre('${genre.id}','${genre.name}')|">
+                                <i class="fas fa-edit ml-2"></i>
+                            </button>
+                        </td>
+
+                        <td>
+                            <a th:href="@{/genres/delete/{id}(id=${genre.id})}" title="delete"
+                               class="btn btn-sm btn-danger">
+                                <i class="fas fa-times ml-2"></i>
+                            </a>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Genre Add/Update Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="genreForm" action="#" method="post" th:action="@{/genres}" th:object="${genreDto}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Genre Add/Update</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <input id="genreId" th:field="*{id}" type="hidden" th:value="0">
+
+                        <div class="form-floating mb-3">
+                            <input id="genreName" th:field="*{name}" type="text" class="form-control is-invalid"
+                                   placeholder="Enter a genre name">
+                            <label for="genreName">Enter a genre name</label>
+                            <div class="invalid-feedback">
+                                Please enter a valid genre name.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+
+<th:block layout:fragment="scripts">
+
+    <script>
+
+        let modal = $("#exampleModal");
+        let form = $("#genreForm");
+        let inpGenreId = $("#genreId");
+        let inpGenreName = $("#genreName");
+
+        function createGenre() {
+            form.attr("action", "/genres/create");
+            inpGenreId.val(0);
+            inpGenreName.val(null);
+            modal.modal('show');
+        }
+
+        function updateGenre(genreId, genreName) {
+            form.attr("action", "/genres/update");
+            inpGenreId.val(genreId);
+            inpGenreName.val(genreName);
+            modal.modal('show');
+        }
+
+    </script>
+
+</th:block>
 
 </body>
 </html>

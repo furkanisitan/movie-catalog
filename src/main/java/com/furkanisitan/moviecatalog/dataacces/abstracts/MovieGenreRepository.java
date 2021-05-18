@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface MovieGenreRepository extends JpaRepository<MovieGenre, MovieGenreKey> {
 
-    Optional<MovieGenre> getByIdGenreId(int genreId);
+    List<MovieGenre> findAllByIdGenreId(int genreId);
 
     @Transactional
     void deleteAllByIdGenreId(int genreId);
