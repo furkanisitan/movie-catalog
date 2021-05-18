@@ -1,6 +1,7 @@
 package com.furkanisitan.moviecatalog;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
@@ -17,5 +18,4 @@ public class MovieCatalogApplication {
     public LayoutDialect layoutDialect() {
         return new LayoutDialect();
     }
-
 }

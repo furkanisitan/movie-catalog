@@ -3,6 +3,9 @@ package com.furkanisitan.moviecatalog.business.managers;
 import com.furkanisitan.moviecatalog.business.concretes.GenreManager;
 import com.furkanisitan.moviecatalog.dataacces.abstracts.GenreRepository;
 import com.furkanisitan.moviecatalog.entities.concretes.Genre;
+import com.furkanisitan.moviecatalog.webmvc.dtos.genres.GenreDto;
+import com.furkanisitan.moviecatalog.webmvc.helpers.MapperHelper;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -10,11 +13,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.modelmapper.config.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
