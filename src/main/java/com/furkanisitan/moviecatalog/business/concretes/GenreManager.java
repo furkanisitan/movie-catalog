@@ -2,7 +2,9 @@ package com.furkanisitan.moviecatalog.business.concretes;
 
 import com.furkanisitan.moviecatalog.business.abstracts.GenreService;
 import com.furkanisitan.moviecatalog.business.validationrules.fluentvalidator.GenreValidator;
+import com.furkanisitan.moviecatalog.business.validationrules.fluentvalidator.helpers.ErrorMessageHelper;
 import com.furkanisitan.moviecatalog.core.aspects.annotations.FluentValidator;
+import com.furkanisitan.moviecatalog.core.exceptions.UniquePropertyException;
 import com.furkanisitan.moviecatalog.dataacces.abstracts.GenreRepository;
 import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieGenreRepository;
 import com.furkanisitan.moviecatalog.entities.concretes.Genre;
@@ -38,12 +40,23 @@ public class GenreManager implements GenreService {
     @FluentValidator(GenreValidator.class)
     @Override
     public int save(Genre genre) {
+
+        // unique name
+        if (genreRepository.existsByName(genre.getName()))
+            throw new UniquePropertyException("name", ErrorMessageHelper.unique("Name"));
+
         return genreRepository.save(genre).getId();
     }
 
     @FluentValidator(GenreValidator.class)
     @Override
     public void update(Genre genre) {
+
+        // unique name
+        var existGenre = genreRepository.findByName(genre.getName()).orElse(null);
+        if (existGenre != null && existGenre.getId() != genre.getId())
+            throw new UniquePropertyException("name", ErrorMessageHelper.unique("Name"));
+
         genreRepository.save(genre);
     }
 

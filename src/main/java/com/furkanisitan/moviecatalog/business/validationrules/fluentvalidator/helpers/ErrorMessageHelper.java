@@ -23,4 +23,9 @@ public class ErrorMessageHelper {
     public static String acceptedValue(String field, List<String> acceptedValues) {
         return String.format("%s not one of the values accepted: %s", field, acceptedValues);
     }
+
+    public static String unique(String field) {
+        return String.format("%s must be unique.", field);
+    }
+
 }

@@ -5,7 +5,7 @@ import br.com.fluentvalidator.exception.ValidationException;
 
 public class FluentValidatorException extends ValidationException {
 
-    protected FluentValidatorException(ValidationResult validationResult) {
+    public FluentValidatorException(ValidationResult validationResult) {
         super(validationResult);
     }
 }
