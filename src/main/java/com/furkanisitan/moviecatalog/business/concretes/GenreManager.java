@@ -1,6 +1,8 @@
 package com.furkanisitan.moviecatalog.business.concretes;
 
 import com.furkanisitan.moviecatalog.business.abstracts.GenreService;
+import com.furkanisitan.moviecatalog.business.validationrules.fluentvalidator.GenreValidator;
+import com.furkanisitan.moviecatalog.core.aspects.annotations.FluentValidator;
 import com.furkanisitan.moviecatalog.dataacces.abstracts.GenreRepository;
 import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieGenreRepository;
 import com.furkanisitan.moviecatalog.entities.concretes.Genre;
@@ -33,11 +35,13 @@ public class GenreManager implements GenreService {
         return genreRepository.findById(id);
     }
 
+    @FluentValidator(GenreValidator.class)
     @Override
     public int save(Genre genre) {
         return genreRepository.save(genre).getId();
     }
 
+    @FluentValidator(GenreValidator.class)
     @Override
     public void update(Genre genre) {
         genreRepository.save(genre);
