@@ -15,47 +15,42 @@
     <div th:switch="${#lists.isEmpty(genres)}" class="row">
 
         <div class="col-md-6 mx-auto">
+            <h2 class="my-5">Genre List</h2>
 
-            <h2 th:case="true">No genres yet!</h2>
+            <button class="btn btn-sm btn-success" onclick="createGenre()">
+                Create
+            </button>
 
-            <div th:case="false">
-                <h2 class="my-5">Genre List</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="genre, iter : ${genres}">
+                    <td scope="row" th:text="${iter.index + 1}"></td>
+                    <td th:text="${genre.name}"></td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top"
+                                title="edit" th:attr="onclick=|updateGenre('${genre.id}','${genre.name}')|">
+                            <i class="fas fa-edit ml-2"></i>
+                        </button>
+                    </td>
 
-                <button class="btn btn-sm btn-success" onclick="createGenre()">
-                    Create
-                </button>
+                    <td>
+                        <a th:href="@{/genres/delete/{id}(id=${genre.id})}" title="delete"
+                           class="btn btn-sm btn-danger">
+                            <i class="fas fa-times ml-2"></i>
+                        </a>
+                    </td>
 
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Edit</th>
-                        <th scope="col">Delete</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="genre, iter : ${genres}">
-                        <td scope="row" th:text="${iter.index + 1}"></td>
-                        <td th:text="${genre.name}"></td>
-                        <td>
-                            <button class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top"
-                                    title="edit" th:attr="onclick=|updateGenre('${genre.id}','${genre.name}')|">
-                                <i class="fas fa-edit ml-2"></i>
-                            </button>
-                        </td>
-
-                        <td>
-                            <a th:href="@{/genres/delete/{id}(id=${genre.id})}" title="delete"
-                               class="btn btn-sm btn-danger">
-                                <i class="fas fa-times ml-2"></i>
-                            </a>
-                        </td>
-
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -63,7 +58,8 @@
     <!-- Genre Add/Update Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form id="genreForm" action="#" method="post" th:action="@{/genres}" th:object="${genreDto}">
+            <form id="genreForm" action="#" method="post" th:object="${genreDto}">
+
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Genre Add/Update</h5>
@@ -74,11 +70,11 @@
                         <input id="genreId" th:field="*{id}" type="hidden" th:value="0">
 
                         <div class="form-floating mb-3">
-                            <input id="genreName" th:field="*{name}" type="text" class="form-control is-invalid"
+                            <input id="genreName" th:field="*{name}" type="text" class="form-control"
+                                   th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
                                    placeholder="Enter a genre name">
                             <label for="genreName">Enter a genre name</label>
-                            <div class="invalid-feedback">
-                                Please enter a valid genre name.
+                            <div class="invalid-feedback" th:errors="*{name}">
                             </div>
                         </div>
                     </div>
@@ -90,6 +86,8 @@
             </form>
         </div>
     </div>
+
+
 </div>
 
 
@@ -99,22 +97,45 @@
 
         let modal = $("#exampleModal");
         let form = $("#genreForm");
+        let modalTitle = $("#exampleModalLabel");
         let inpGenreId = $("#genreId");
         let inpGenreName = $("#genreName");
 
         function createGenre() {
             form.attr("action", "/genres/create");
+            modalTitle.text("Genre Create")
             inpGenreId.val(0);
             inpGenreName.val(null);
-            modal.modal('show');
+            showModal();
         }
 
         function updateGenre(genreId, genreName) {
             form.attr("action", "/genres/update");
+            modalTitle.text("Genre Update")
             inpGenreId.val(genreId);
             inpGenreName.val(genreName);
+            showModal();
+        }
+
+        function showModal() {
+            form.find("input").removeClass("is-invalid");
             modal.modal('show');
         }
+
+    </script>
+
+    <script th:inline="javascript" th:if="${showModal!='none'}">
+
+        /*<![CDATA[*/
+
+        $(function () {
+            let showModal = /*[[${showModal}]]*/ 'default';
+            form.attr("action", showModal === "create" ? "/genres/create" : "/genres/update");
+            modalTitle.text(showModal === "create" ? "Genre Create" : "Genre Update")
+            $("#exampleModal").modal('show');
+        });
+
+        /*]]>*/
 
     </script>
 

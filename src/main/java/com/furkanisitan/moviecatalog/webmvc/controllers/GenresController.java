@@ -1,18 +1,16 @@
 package com.furkanisitan.moviecatalog.webmvc.controllers;
 
 import com.furkanisitan.moviecatalog.business.abstracts.GenreService;
-import com.furkanisitan.moviecatalog.entities.concretes.Genre;
 import com.furkanisitan.moviecatalog.webmvc.dtos.genres.GenreDto;
 import com.furkanisitan.moviecatalog.webmvc.helpers.MapperHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.Comparator;
 
 @Controller
@@ -27,29 +25,46 @@ public class GenresController {
     }
 
     @GetMapping({"", "/index"})
-    public String showGenreList(Model model, GenreDto genreDto) {
+    public String showList(Model model) {
+
+        if (!model.containsAttribute("genreDto")) {
+            model.addAttribute("genreDto", new GenreDto());
+            model.addAttribute("showModal", "none");
+        }
 
         var genreDtoList = MapperHelper.mapList(genreService.getAll(), GenreDto.class);
         genreDtoList.sort(Comparator.comparing(GenreDto::getName, String.CASE_INSENSITIVE_ORDER));
-
         model.addAttribute("genres", genreDtoList);
 
         return "genres/index";
     }
 
     @PostMapping("/create")
-    public String createGenre(GenreDto genreDto, BindingResult bindingResult) {
+    public String createGenre(@Valid GenreDto genreDto,
+                              final BindingResult result,
+                              final RedirectAttributes attributes) {
 
-        genreDto.setId(0);
-        genreService.save(MapperHelper.map(genreDto, Genre.class));
-
+        if (result.hasErrors()) {
+            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "genreDto", result);
+            attributes.addFlashAttribute("genreDto", genreDto);
+            attributes.addFlashAttribute("showModal", "create");
+        }
         return "redirect:/genres/index";
     }
 
     @PostMapping("/update")
-    public String updateGenre(GenreDto genreDto, BindingResult bindingResult) {
+    public String updateGenre(@Valid final GenreDto genreDto,
+                              final BindingResult result,
+                              final RedirectAttributes attributes) {
 
-        genreService.update(MapperHelper.map(genreDto, Genre.class));
+        //genreService.update(MapperHelper.map(genreDto, Genre.class));
+
+        if (result.hasErrors()) {
+            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "genreDto", result);
+            attributes.addFlashAttribute("genreDto", genreDto);
+            attributes.addFlashAttribute("showModal", "update");
+        }
+
         return "redirect:/genres/index";
     }
 
