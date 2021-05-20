@@ -34,7 +34,7 @@ public class GenreController {
     }
 
     @GetMapping({"", "/index"})
-    public String showList(Model model) {
+    public String index(Model model) {
 
         if (!model.containsAttribute(modelName)) {
             model.addAttribute(modelName, new GenreDto());
@@ -45,11 +45,11 @@ public class GenreController {
         genreDtoList.sort(Comparator.comparing(GenreDto::getName, String.CASE_INSENSITIVE_ORDER));
         model.addAttribute("genres", genreDtoList);
 
-        return "genres/index";
+        return "genre/index";
     }
 
     @PostMapping("/create")
-    public String createGenre(@Valid GenreDto genreDto, final BindingResult result, final RedirectAttributes attributes) {
+    public String create(@Valid GenreDto genreDto, final BindingResult result, final RedirectAttributes attributes) {
 
         var wrapper = ServiceWrapper.of(() ->
                 genreService.save(MapperHelper.map(genreDto, Genre.class)), result, modelName);
@@ -64,7 +64,7 @@ public class GenreController {
     }
 
     @PostMapping("/update")
-    public String updateGenre(@Valid final GenreDto genreDto, final BindingResult result, final RedirectAttributes attributes) {
+    public String update(@Valid final GenreDto genreDto, final BindingResult result, final RedirectAttributes attributes) {
 
         var wrapper = ServiceWrapper.of(() ->
                 genreService.update(MapperHelper.map(genreDto, Genre.class)), result, modelName);
@@ -79,7 +79,7 @@ public class GenreController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") int id, Model model) {
+    public String delete(@PathVariable("id") int id, Model model) {
 
         var genre = genreService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid genre Id:" + id));
         genreService.delete(genre);

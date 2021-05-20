@@ -72,6 +72,8 @@
             <artifactId>java-fluent-validator</artifactId>
             <version>1.9.3</version>
         </dependency>
+
+        <!--webjars-->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
@@ -87,6 +89,18 @@
             <artifactId>jquery</artifactId>
             <version>3.6.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>datatables</artifactId>
+            <version>1.10.24</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>datatables-buttons</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+
+        <!--tests-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

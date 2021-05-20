@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Embeddable
 @Data
-public class CharacterKey implements Serializable {
+public class MovieActorKey implements Serializable {
 
     @Column(name = "movie_id")
     private int movieId;

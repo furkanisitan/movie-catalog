@@ -2,7 +2,6 @@ package com.furkanisitan.moviecatalog.entities.concretes;
 
 import lombok.Data;
 
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +19,6 @@ public class Actor implements com.furkanisitan.moviecatalog.core.entities.Entity
     @Column(name = "fullName", nullable = false, length = 100)
     private String fullName;
 
-    @OneToMany(mappedBy = "actor")
-    private Set<Character> characters = new HashSet<>();
+    @ManyToMany(mappedBy = "actors")
+    private Set<Movie> movies = new HashSet<>();
 }

@@ -30,8 +30,9 @@ public class Movie implements com.furkanisitan.moviecatalog.core.entities.Entity
     @Column(name = "media")
     private String media;
 
-    @OneToMany(mappedBy = "movie")
-    private Set<Character> characters = new HashSet<>();
+    @ManyToMany
+    @JoinTable(name = "movie_actor", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "actor_id"))
+    private Set<Actor> actors = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "movie_language", joinColumns = @JoinColumn(name = "movie_id"), inverseJoinColumns = @JoinColumn(name = "language_id"))

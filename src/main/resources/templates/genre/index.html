@@ -6,54 +6,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Genres</title>
-
+    <th:block layout:fragment="styles">
+        <link href="/webjars/datatables/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+        <link href="/webjars/datatables-buttons/1.7.0/css/buttons.dataTables.min.css" rel="stylesheet"/>
+        <link href="/webjars/datatables-buttons/1.7.0/css/buttons.bootstrap5.min.css" rel="stylesheet"/>
+    </th:block>
 </head>
 <body>
 
 <div layout:fragment="content">
 
-    <div th:switch="${#lists.isEmpty(genres)}" class="row">
 
-        <div class="col-md-6 mx-auto">
-            <h2 class="my-5">Genre List</h2>
+    <h2>Manage Genres</h2>
 
-            <button class="btn btn-sm btn-success" onclick="createGenre()">
-                Create
-            </button>
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Delete</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="genre, iter : ${genres}">
-                    <td scope="row" th:text="${iter.index + 1}"></td>
-                    <td th:text="${genre.name}"></td>
-                    <td>
-                        <button class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top"
-                                title="edit" th:attr="onclick=|updateGenre('${genre.id}','${genre.name}')|">
-                            <i class="fas fa-edit ml-2"></i>
+    <table id="example" class="table table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="genre : ${genres}">
+            <td>
+                <span class="d-flex justify-content-between">
+                    <span th:text="${genre.name}"></span>
+                    <span>
+                        <button class="btn btn-sm text-warning" data-toggle="tooltip" data-placement="top" title="edit"
+                                th:attr="onclick=|updateGenre('${genre.id}','${genre.name}')|">
+                            <i class="fas fa-edit"></i>
                         </button>
-                    </td>
 
-                    <td>
                         <a th:href="@{/genres/delete/{id}(id=${genre.id})}" title="delete"
-                           class="btn btn-sm btn-danger">
-                            <i class="fas fa-times ml-2"></i>
+                           class="btn btn-sm text-danger">
+                            <i class="fas fa-trash"></i>
                         </a>
-                    </td>
+                    </span>
 
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                </span>
+            </td>
 
+        </tr>
+        </tbody>
+    </table>
 
     <!-- Genre Add/Update Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -87,11 +81,14 @@
         </div>
     </div>
 
-
 </div>
 
 
 <th:block layout:fragment="scripts">
+    <script src="/webjars/datatables/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="/webjars/datatables/1.10.24/js/dataTables.bootstrap5.min.js"></script>
+    <script src="/webjars/datatables-buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+    <script src="/webjars/datatables-buttons/1.7.0/js/buttons.bootstrap5.min.js"></script>
 
     <script>
 
@@ -121,6 +118,28 @@
             form.find("input").removeClass("is-invalid");
             modal.modal('show');
         }
+
+        $(document).ready(function () {
+            $('#example').DataTable({
+                dom: 'Bfrtipl',
+                buttons: {
+                    buttons: [
+                        {
+                            text: "Create New",
+                            action: function (e, dt, node, config) {
+                                createGenre();
+                            }
+                        }
+                    ],
+                    dom: {
+                        button: {
+                            tag: "button",
+                            className: "btn btn-sm btn-success"
+                        }
+                    }
+                }
+            });
+        });
 
     </script>
 
