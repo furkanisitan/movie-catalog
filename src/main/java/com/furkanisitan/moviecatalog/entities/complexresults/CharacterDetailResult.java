@@ -1,7 +1,5 @@
-package com.furkanisitan.moviecatalog.entities.dtos;
+package com.furkanisitan.moviecatalog.entities.complexresults;
 
-import com.furkanisitan.moviecatalog.entities.concretes.MovieActor;
-import com.furkanisitan.moviecatalog.entities.ids.MovieActorId;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CharacterDetailDto {
+public class CharacterDetailResult {
 
     private int actorId;
 
@@ -18,5 +16,4 @@ public class CharacterDetailDto {
     private String roleName;
 
     private String movieName;
-
 }

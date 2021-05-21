@@ -22,8 +22,8 @@ import javax.validation.Valid;
 @RequestMapping("genres")
 public class GenreController {
 
-    private static final String modelName = "genreDto";
-    private static final String showModal = "showModal";
+    private static final String genreDtoAttr = "genreDto";
+    private static final String showModalAttr = "showModal";
 
     private final GenreService genreService;
 
@@ -35,9 +35,8 @@ public class GenreController {
     @GetMapping({"", "/index"})
     public String index(Model model) {
 
-        if (!model.containsAttribute(modelName)) {
-            model.addAttribute(modelName, new GenreDto());
-        }
+        if (!model.containsAttribute(genreDtoAttr))
+            model.addAttribute(genreDtoAttr, new GenreDto());
 
         var genreDtoList = MapperHelper.mapList(genreService.getAll(), GenreDto.class);
         model.addAttribute("genres", genreDtoList);
@@ -46,15 +45,16 @@ public class GenreController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid GenreDto genreDto, final BindingResult result, final RedirectAttributes attributes) {
+    public String create(@Valid final GenreDto genreDto, final BindingResult result, final RedirectAttributes attributes) {
 
-        var wrapper = ServiceWrapper.of(() ->
-                genreService.create(MapperHelper.map(genreDto, Genre.class)), result, modelName);
+        genreDto.setId(0);
+
+        var wrapper = ServiceWrapper.of(() -> genreService.create(MapperHelper.map(genreDto, Genre.class)), result, genreDtoAttr);
 
         if (wrapper.isFailure()) {
-            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + modelName, result);
-            attributes.addFlashAttribute(modelName, genreDto);
-            attributes.addFlashAttribute(showModal, "create");
+            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + genreDtoAttr, result);
+            attributes.addFlashAttribute(genreDtoAttr, genreDto);
+            attributes.addFlashAttribute(showModalAttr, "create");
         }
 
         return "redirect:/genres/index";
@@ -63,13 +63,12 @@ public class GenreController {
     @PostMapping("/update")
     public String update(@Valid final GenreDto genreDto, final BindingResult result, final RedirectAttributes attributes) {
 
-        var wrapper = ServiceWrapper.of(() ->
-                genreService.update(MapperHelper.map(genreDto, Genre.class)), result, modelName);
+        var wrapper = ServiceWrapper.of(() -> genreService.update(MapperHelper.map(genreDto, Genre.class)), result, genreDtoAttr);
 
         if (wrapper.isFailure()) {
-            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + modelName, result);
-            attributes.addFlashAttribute(modelName, genreDto);
-            attributes.addFlashAttribute(showModal, "update");
+            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + genreDtoAttr, result);
+            attributes.addFlashAttribute(genreDtoAttr, genreDto);
+            attributes.addFlashAttribute(showModalAttr, "update");
         }
 
         return "redirect:/genres/index";

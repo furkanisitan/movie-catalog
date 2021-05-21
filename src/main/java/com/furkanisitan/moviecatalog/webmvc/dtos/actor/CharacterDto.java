@@ -10,5 +10,4 @@ public class CharacterDto {
     private int movieId;
 
     private String roleName;
-
 }

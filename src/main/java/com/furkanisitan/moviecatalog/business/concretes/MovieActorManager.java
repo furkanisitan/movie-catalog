@@ -8,6 +8,7 @@ import com.furkanisitan.moviecatalog.core.exceptions.UniquePropertyException;
 import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieActorRepository;
 import com.furkanisitan.moviecatalog.entities.concretes.MovieActor;
 import com.furkanisitan.moviecatalog.entities.ids.MovieActorId;
+import com.furkanisitan.moviecatalog.webmvc.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,10 @@ public class MovieActorManager implements MovieActorService {
     @FluentValidator(MovieActorValidator.class)
     @Override
     public void update(MovieActor movieActor) {
+
+        if (!movieActorRepository.existsById(movieActor.getId()))
+            throw new ResourceNotFoundException("Invalid movieActor Id:" + movieActor.getId());
+
         movieActorRepository.save(movieActor);
     }
 

@@ -22,27 +22,28 @@
         <tbody>
         <tr th:each="actor : ${actors}">
             <td>
-                    <span class="d-flex justify-content-between">
-                        <span th:text="${actor.fullName}"></span>
-                        <span>
-                            <button class="btn btn-sm text-primary" data-toggle="tooltip" data-placement="top"
-                                    title="view">
-                                <i class="fas fa-eye"></i>
-                            </button>
+                <span class="d-flex justify-content-between">
+                    <span th:text="${actor.fullName}"></span>
 
-                             <a th:href="@{/actors/update/{id}(id=${actor.id})}" title="edit"
-                                class="btn btn-sm text-warning">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                    <div>
+                         <a th:href="@{/actors/{id}(id=${actor.id})}" title="view"
+                            class="btn btn-sm text-primary">
+                            <i class="fas fa-eye"></i>
+                        </a>
 
-                            <a th:href="@{/actors/delete/{id}(id=${actor.id})}" title="delete"
-                               class="btn btn-sm text-danger">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                         <a th:href="@{/actors/update/{id}(id=${actor.id})}" title="edit"
+                            class="btn btn-sm text-warning">
+                            <i class="fas fa-edit"></i>
+                        </a>
 
-                        </span>
+                        <a th:href="@{/actors/delete/{id}(id=${actor.id})}" title="delete"
+                           class="btn btn-sm text-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
 
-                    </span>
+                    </div>
+
+                </span>
             </td>
 
         </tr>
@@ -50,9 +51,9 @@
     </table>
 
     <!-- Actor Add Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalActor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form id="actorForm" th:action="@{/actors/create}" method="post" th:object="${actorDto}">
+            <form id="formActor" th:action="@{/actors/create}" method="post" th:object="${actorDto}">
 
                 <div class="modal-content">
                     <div class="modal-header">
@@ -83,16 +84,24 @@
 
 <th:block layout:fragment="scripts">
 
-    <script>
+    <script th:inline="javascript">
 
-        let modal = $("#exampleModal");
+        let modal = $("#modalActor");
+        let form = $("#formActor");
 
         function showModal() {
-            $("#actorForm").find("input").removeClass("is-invalid");
+            form.find('.is-invalid').removeClass('is-invalid');
             modal.modal('show');
         }
 
         $(document).ready(function () {
+
+            let showModalAttr = /*[[${showModal}]]*/ 'default';
+
+            if (showModalAttr && showModalAttr !== 'default') {
+                modal.modal('show');
+            }
+
             $('#example').DataTable({
                 dom: 'Bfrtipl',
                 order: [
@@ -117,14 +126,6 @@
             });
         });
 
-    </script>
-
-    <script th:inline="javascript" th:if="${showModal!=null}">
-        /*<![CDATA[*/
-        $(function () {
-            $("#exampleModal").modal('show');
-        });
-        /*]]>*/
     </script>
 
 </th:block>

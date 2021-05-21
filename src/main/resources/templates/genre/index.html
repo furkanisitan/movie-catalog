@@ -25,17 +25,18 @@
             <td>
                 <span class="d-flex justify-content-between">
                     <span th:text="${genre.name}"></span>
-                    <span>
+
+                    <div>
                         <button class="btn btn-sm text-warning" data-toggle="tooltip" data-placement="top" title="edit"
                                 th:attr="onclick=|updateGenre('${genre.id}','${genre.name}')|">
                             <i class="fas fa-edit"></i>
                         </button>
 
-                        <a th:href="@{/genres/delete/{id}(id=${genre.id})}" title="delete"
-                           class="btn btn-sm text-danger">
+                        <a title="delete" class="btn btn-sm text-danger"
+                           th:href="@{/genres/delete/{id}(id=${genre.id})}">
                             <i class="fas fa-trash"></i>
                         </a>
-                    </span>
+                    </div>
 
                 </span>
             </td>
@@ -45,15 +46,18 @@
     </table>
 
     <!-- Genre Add/Update Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalGenre" tabindex="-1">
         <div class="modal-dialog">
-            <form id="genreForm" action="#" method="post" th:object="${genreDto}">
+
+            <form id="formGenre" action="#" method="post" th:object="${genreDto}">
 
                 <div class="modal-content">
+
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Genre Add/Update</h5>
+                        <h5 class="modal-title" id="modalGenreTitle">Genre Add/Update</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+
                     <div class="modal-body">
 
                         <input id="genreId" th:field="*{id}" type="hidden" th:value="0">
@@ -81,19 +85,18 @@
 
 <th:block layout:fragment="scripts">
 
-    <script>
+    <script th:inline="javascript">
 
-        let modal = $("#exampleModal");
-        let form = $("#genreForm");
-        let modalTitle = $("#exampleModalLabel");
+        let modal = $("#modalGenre");
+        let form = $("#formGenre");
+        let modalTitle = $("#modalGenreTitle");
         let inpGenreId = $("#genreId");
         let inpGenreName = $("#genreName");
 
         function createGenre() {
             form.attr("action", "/genres/create");
+            form[0].reset();
             modalTitle.text("Genre Create")
-            inpGenreId.val(0);
-            inpGenreName.val(null);
             showModal();
         }
 
@@ -106,20 +109,29 @@
         }
 
         function showModal() {
-            form.find("input").removeClass("is-invalid");
+            form.find('.is-invalid').removeClass('is-invalid');
             modal.modal('show');
         }
 
         $(document).ready(function () {
+
+            let showModalAttr = /*[[${showModal}]]*/ 'default';
+
+            if (showModalAttr && showModalAttr !== 'default') {
+                form.attr('action', showModal === 'create' ? '/genres/create' : '/genres/update');
+                modalTitle.text(showModal === 'create' ? 'Genre Create' : 'Genre Update');
+                modal.modal('show');
+            }
+
             $('#example').DataTable({
                 dom: 'Bfrtipl',
                 order: [
-                    [0, "asc"]
+                    [0, 'asc']
                 ],
                 buttons: {
                     buttons: [
                         {
-                            text: "Create New",
+                            text: 'Create New',
                             action: function (e, dt, node, config) {
                                 createGenre();
                             }
@@ -127,28 +139,13 @@
                     ],
                     dom: {
                         button: {
-                            tag: "button",
-                            className: "btn btn-sm btn-success"
+                            tag: 'button',
+                            className: 'btn btn-sm btn-success'
                         }
                     }
                 }
             });
         });
-
-    </script>
-
-    <script th:inline="javascript" th:if="${showModal!=null}">
-
-        /*<![CDATA[*/
-
-        $(function () {
-            let showModal = /*[[${showModal}]]*/ 'default';
-            form.attr("action", showModal === "create" ? "/genres/create" : "/genres/update");
-            modalTitle.text(showModal === "create" ? "Genre Create" : "Genre Update")
-            $("#exampleModal").modal('show');
-        });
-
-        /*]]>*/
 
     </script>
 

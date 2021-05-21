@@ -29,7 +29,11 @@
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="reset" class="card-link btn btn-sm btn-secondary">Clear</button>
+
+                            <a th:href="@{/actors/delete/{id}(id=${actorDto.id})}" class="card-link btn btn-sm btn-danger">
+                                Remove
+                            </a>
+                            <button type="reset" class="card-link btn btn-sm btn-secondary">Reset</button>
                             <button type="submit" class="card-link btn btn-sm btn-primary">Submit</button>
                         </div>
 
@@ -41,27 +45,28 @@
         <div class="col-md-6">
             <h3>Create Actor Role</h3>
 
-            <form id="createActorForm" th:action="@{/actors/create-role}" method="post" th:object="${characterDto}">
+            <form id="formActor" th:action="@{/actors/roles/create}" method="post" th:object="${characterDto}">
+
                 <div class="card">
                     <div class="card-body">
 
                         <input name="actorId" th:value="${actorDto.id}" type="hidden">
 
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="movieName" th:field="*{movieId}"
+                            <select class="form-select" id="characterMovie" th:field="*{movieId}"
                                     th:classappend="${#fields.hasErrors('movieId') ? 'is-invalid' : ''}">
-                                <option th:each="movie : ${movies}" th:value="${movie.id}"
+                                <option th:each="movie : ${movieIdNameResults}" th:value="${movie.id}"
                                         th:text="${movie.name}"></option>
                             </select>
-                            <label for="movieName">Select movie</label>
+                            <label for="characterMovie">Select movie</label>
                             <div class="invalid-feedback" th:errors="*{movieId}"></div>
                         </div>
 
                         <div class="form-floating mb-3">
-                            <input id="actorRoleName" th:field="*{roleName}" type="text" class="form-control"
+                            <input id="characterRole" th:field="*{roleName}" type="text" class="form-control"
                                    th:classappend="${#fields.hasErrors('roleName') ? 'is-invalid' : ''}"
                                    placeholder="Enter a role name">
-                            <label for="actorRoleName">Enter a role name</label>
+                            <label for="characterRole">Enter a role name</label>
                             <div class="invalid-feedback" th:errors="*{roleName}">
                             </div>
                         </div>
@@ -77,7 +82,6 @@
     </div>
 
     <h3>Manage Roles</h3>
-
     <table id="example" class="table table-hover">
         <thead>
         <tr>
@@ -86,27 +90,27 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="character : ${characters}">
+        <tr th:each="character : ${characterDetailResults}">
             <td th:text="${character.movieName}"></td>
 
             <td>
                 <span class="d-flex justify-content-between">
+
                     <span th:text="${character.roleName}"></span>
 
-                    <span>
+                    <div>
+                        <button class="btn btn-sm text-warning" data-toggle="tooltip" data-placement="top"
+                                title="edit"
+                                th:attr="onclick=|updateRole('${character.movieId}','${character.actorId}', '${character.roleName}')|">
+                            <i class="fas fa-edit"></i>
+                        </button>
 
-                            <button class="btn btn-sm text-warning" data-toggle="tooltip" data-placement="top"
-                                    title="edit"
-                                    th:attr="onclick=|updateRole('${character.movieId}','${character.actorId}', '${character.roleName}')|">
-                                <i class="fas fa-edit"></i>
-                            </button>
+                        <a th:href="@{/actors/roles/delete(actorId=${character.actorId}, movieId=${character.movieId})}"
+                           title="delete" class="btn btn-sm text-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
 
-                            <a th:href="@{/actors/delete-role(actorId=${character.actorId}, movieId=${character.movieId})}"
-                               title="delete" class="btn btn-sm text-danger">
-                                <i class="fas fa-trash"></i>
-                            </a>
-
-                        </span>
+                    </div>
 
                 </span>
             </td>
@@ -115,9 +119,9 @@
     </table>
 
     <!-- Role Add Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <form id="characterForm" th:action="@{/actors/update-role}" method="post" th:object="${characterDto}">
+            <form id="formCharacter" th:action="@{/actors/roles/update}" method="post" th:object="${characterDto}">
 
                 <div class="modal-content">
                     <div class="modal-header">
@@ -126,14 +130,14 @@
                     </div>
                     <div class="modal-body">
 
-                        <input id="movieId" th:field="*{movieId}" type="hidden" th:value="0">
-                        <input id="actorId" th:field="*{actorId}" type="hidden" th:value="0">
+                        <input id="characterMovieId" th:field="*{movieId}" type="hidden" th:value="0">
+                        <input id="characterActorId" th:field="*{actorId}" type="hidden" th:value="0">
 
                         <div class="form-floating mb-3">
-                            <input id="roleName" th:field="*{roleName}" type="text" class="form-control"
+                            <input id="characterRoleName" th:field="*{roleName}" type="text" class="form-control"
                                    th:classappend="${#fields.hasErrors('roleName') ? 'is-invalid' : ''}"
                                    placeholder="Enter a role name">
-                            <label for="roleName">Enter a role name</label>
+                            <label for="characterRoleName">Enter a role name</label>
                             <div class="invalid-feedback" th:errors="*{roleName}">
                             </div>
                         </div>
@@ -151,17 +155,33 @@
 
 <th:block layout:fragment="scripts">
 
-    <script>
+    <script th:inline="javascript">
+
+        let modal = $("#modalRole");
+        let formActor = $("#formActor");
+        let formCharacter = $("#formCharacter");
 
         function updateRole(movieId, actorId, roleName) {
-            $("#movieId").val(movieId);
-            $("#actorId").val(actorId);
-            $("#roleName").val(roleName);
-            $("#characterForm").find("input").removeClass("is-invalid");
-            $("#exampleModal").modal('show');
+            $("#characterMovieId").val(movieId);
+            $("#characterActorId").val(actorId);
+            $("#characterRoleName").val(roleName);
+            showModal();
+        }
+
+        function showModal() {
+            formCharacter.find('.is-invalid').removeClass('is-invalid');
+            modal.modal('show');
         }
 
         $(document).ready(function () {
+
+            let showModalAttr = /*[[${showModal}]]*/ 'default';
+
+            if (showModalAttr && showModalAttr !== 'default') {
+                formActor.find('.is-invalid').removeClass('is-invalid');
+                modal.modal('show');
+            }
+
             $('#example').DataTable({
                 dom: 'Bfrtipl',
                 order: [
@@ -170,15 +190,6 @@
             });
         });
 
-    </script>
-
-    <script th:inline="javascript" th:if="${showModal!=null}">
-        /*<![CDATA[*/
-        $(function () {
-            $("#createActorForm").find("input").removeClass("is-invalid");
-            $("#exampleModal").modal('show');
-        });
-        /*]]>*/
     </script>
 
 </th:block>

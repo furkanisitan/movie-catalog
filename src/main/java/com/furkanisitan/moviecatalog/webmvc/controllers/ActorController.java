@@ -24,7 +24,9 @@ import javax.validation.Valid;
 @RequestMapping("actors")
 public class ActorController {
 
-    private static final String showModal = "showModal";
+    private static final String actorDtoAttr = "actorDto";
+    private static final String characterDtoAttr = "characterDto";
+    private static final String showModalAttr = "showModal";
 
     private final ActorService actorService;
     private final MovieService movieService;
@@ -40,9 +42,8 @@ public class ActorController {
     @GetMapping({"", "/index"})
     public String index(Model model) {
 
-        if (!model.containsAttribute("actorDto")) {
-            model.addAttribute("actorDto", new ActorDto());
-        }
+        if (!model.containsAttribute(actorDtoAttr))
+            model.addAttribute(actorDtoAttr, new ActorDto());
 
         var actorDtoList = MapperHelper.mapList(actorService.getAll(), ActorDto.class);
         model.addAttribute("actors", actorDtoList);
@@ -50,16 +51,29 @@ public class ActorController {
         return "actor/index";
     }
 
-    @PostMapping("/create")
-    public String create(@Valid ActorDto actorDto, final BindingResult result, final RedirectAttributes attributes) {
+    @GetMapping("/{id}")
+    public String get(@PathVariable int id, Model model) {
 
-        var wrapper = ServiceWrapper.of(() ->
-                actorService.create(MapperHelper.map(actorDto, Actor.class)), result, "actorDto");
+        var actor = actorService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid actor Id:" + id));
+        var characterDetailResults = actorService.getAllCharacterDetailResultsByActorId(id);
+
+        model.addAttribute(actorDtoAttr, MapperHelper.map(actor, ActorDto.class));
+        model.addAttribute("characterDetailResults", characterDetailResults);
+
+        return "actor/detail";
+    }
+
+    @PostMapping("/create")
+    public String create(@Valid final ActorDto actorDto, final BindingResult result, final RedirectAttributes attributes) {
+
+        actorDto.setId(0);
+
+        var wrapper = ServiceWrapper.of(() -> actorService.create(MapperHelper.map(actorDto, Actor.class)), result, actorDtoAttr);
 
         if (wrapper.isFailure()) {
-            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "actorDto", result);
-            attributes.addFlashAttribute("actorDto", actorDto);
-            attributes.addFlashAttribute(showModal, "create");
+            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + actorDtoAttr, result);
+            attributes.addFlashAttribute(actorDtoAttr, actorDto);
+            attributes.addFlashAttribute(showModalAttr, "create");
         }
 
         return "redirect:/actors/index";
@@ -68,25 +82,24 @@ public class ActorController {
     @GetMapping("/update/{id}")
     public String update(@PathVariable("id") int id, Model model) {
 
-        if (!model.containsAttribute("characterDto")) {
-            model.addAttribute("characterDto", new CharacterDto());
-        }
+        if (!model.containsAttribute(characterDtoAttr))
+            model.addAttribute(characterDtoAttr, new CharacterDto());
 
         var actor = actorService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid actor Id:" + id));
-        var movies = movieService.getAll();
-        var characters = actorService.getAllCharacters(id);
+        var movieIdNameResults = movieService.getAllMovieIdNameResult();
+        var characterDetailResults = actorService.getAllCharacterDetailResultsByActorId(id);
 
-        model.addAttribute("actorDto", MapperHelper.map(actor, ActorDto.class));
-        model.addAttribute("movies", movies);
-        model.addAttribute("characters", characters);
+        model.addAttribute(actorDtoAttr, MapperHelper.map(actor, ActorDto.class));
+        model.addAttribute("movieIdNameResults", movieIdNameResults);
+        model.addAttribute("characterDetailResults", characterDetailResults);
 
         return "actor/update";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@Valid ActorDto actorDto, BindingResult result) {
+    public String update(@Valid final ActorDto actorDto, final BindingResult result) {
 
-        ServiceWrapper.of(() -> actorService.update(MapperHelper.map(actorDto, Actor.class)), result, "actorDto");
+        ServiceWrapper.of(() -> actorService.update(MapperHelper.map(actorDto, Actor.class)), result, actorDtoAttr);
 
         return "redirect:/actors/update/" + actorDto.getId();
     }
@@ -100,37 +113,34 @@ public class ActorController {
         return "redirect:/actors/index";
     }
 
-    @PostMapping("/create-role")
-    public String createRole(@Valid CharacterDto characterDto, final BindingResult result, final RedirectAttributes attributes) {
+    @PostMapping("/roles/create")
+    public String createRole(@Valid final CharacterDto characterDto, final BindingResult result, final RedirectAttributes attributes) {
 
-        var wrapper = ServiceWrapper.of(() ->
-                movieActorService.createForActor(MapperHelper.map(characterDto, MovieActor.class)), result, "characterDto");
+        var wrapper = ServiceWrapper.of(() -> movieActorService.createForActor(MapperHelper.map(characterDto, MovieActor.class)), result, characterDtoAttr);
 
         if (wrapper.isFailure()) {
-            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "characterDto", result);
-            attributes.addFlashAttribute("characterDto", characterDto);
+            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + characterDtoAttr, result);
+            attributes.addFlashAttribute(characterDtoAttr, characterDto);
         }
 
         return "redirect:/actors/update/" + characterDto.getActorId();
     }
 
-    @PostMapping("/update-role")
-    public String updateRole(@Valid CharacterDto characterDto, final BindingResult result, final RedirectAttributes attributes) {
+    @PostMapping("/roles/update")
+    public String updateRole(@Valid final CharacterDto characterDto, final BindingResult result, final RedirectAttributes attributes) {
 
-        var wrapper = ServiceWrapper.of(() ->
-                movieActorService.update(MapperHelper.map(characterDto, MovieActor.class)), result, "characterDto");
+        var wrapper = ServiceWrapper.of(() -> movieActorService.update(MapperHelper.map(characterDto, MovieActor.class)), result, "characterDto");
 
         if (wrapper.isFailure()) {
-            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "characterDto", result);
-            attributes.addFlashAttribute("characterDto", characterDto);
-            attributes.addFlashAttribute(showModal, "updateRole");
+            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + characterDtoAttr, result);
+            attributes.addFlashAttribute(characterDtoAttr, characterDto);
+            attributes.addFlashAttribute(showModalAttr, "updateRole");
         }
-
 
         return "redirect:/actors/update/" + characterDto.getActorId();
     }
 
-    @GetMapping("/delete-role")
+    @GetMapping("/roles/delete")
     public String deleteRole(@RequestParam int actorId, @RequestParam int movieId) {
 
         var movieActorId = new MovieActorId(movieId, actorId);

@@ -1,6 +1,7 @@
 package com.furkanisitan.moviecatalog.dataaccess;
 
 import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieActorRepository;
+import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,13 @@ public class ActorRepositoryIntegrationTests {
     @Autowired
     private MovieActorRepository movieActorRepository;
 
+    @Autowired
+    private MovieRepository movieRepository;
+
     @Test
     public void test() {
 
-        var movieActorList = movieActorRepository.findAllByIdActorId(2);
-
-//
-//        var actor = actorRepository.findWithMovies(2).get();
-//        var movieActors = actor.getMovieActors();
-//        var movies = actor.getMovies();
+        var movieIdNameResults = movieRepository.getAllByIdSelectIdAndName();
 
 
     }
