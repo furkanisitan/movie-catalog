@@ -18,13 +18,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Movies</a>
+                        <a class="nav-link" th:href="@{/movies}" th:classappend="${#request.requestURI.startsWith('/movies') ? 'active' : ''}">Movies</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Actors</a>
+                        <a class="nav-link" th:href="@{/actors}" th:classappend="${#request.requestURI.startsWith('/actors') ? 'active' : ''}">Actors</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Genres</a>
+                        <a class="nav-link" th:href="@{/genres}" th:classappend="${#request.requestURI.startsWith('/genres') ? 'active' : ''}">Genres</a>
                     </li>
                 </ul>
             </div>

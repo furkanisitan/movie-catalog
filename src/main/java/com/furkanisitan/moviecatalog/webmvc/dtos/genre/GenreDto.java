@@ -1,4 +1,4 @@
-package com.furkanisitan.moviecatalog.webmvc.dtos.genres;
+package com.furkanisitan.moviecatalog.webmvc.dtos.genre;
 
 import lombok.Data;
 
@@ -7,6 +7,5 @@ public class GenreDto {
 
     private int id;
 
-    //@NotBlank
     private String name;
 }

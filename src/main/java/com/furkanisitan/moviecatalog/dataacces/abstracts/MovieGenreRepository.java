@@ -1,16 +1,15 @@
 package com.furkanisitan.moviecatalog.dataacces.abstracts;
 
 import com.furkanisitan.moviecatalog.entities.concretes.MovieGenre;
-import com.furkanisitan.moviecatalog.entities.keys.MovieGenreKey;
+import com.furkanisitan.moviecatalog.entities.ids.MovieGenreId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface MovieGenreRepository extends JpaRepository<MovieGenre, MovieGenreKey> {
+public interface MovieGenreRepository extends JpaRepository<MovieGenre, MovieGenreId> {
 
     List<MovieGenre> findAllByIdGenreId(int genreId);
 

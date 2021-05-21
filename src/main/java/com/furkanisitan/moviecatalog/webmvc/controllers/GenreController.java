@@ -2,7 +2,7 @@ package com.furkanisitan.moviecatalog.webmvc.controllers;
 
 import com.furkanisitan.moviecatalog.business.abstracts.GenreService;
 import com.furkanisitan.moviecatalog.entities.concretes.Genre;
-import com.furkanisitan.moviecatalog.webmvc.dtos.genres.GenreDto;
+import com.furkanisitan.moviecatalog.webmvc.dtos.genre.GenreDto;
 import com.furkanisitan.moviecatalog.webmvc.exceptions.ResourceNotFoundException;
 import com.furkanisitan.moviecatalog.webmvc.helpers.MapperHelper;
 import com.furkanisitan.moviecatalog.webmvc.utils.ServiceWrapper;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.Comparator;
 
 @Controller
 @RequestMapping("genres")
@@ -38,11 +37,9 @@ public class GenreController {
 
         if (!model.containsAttribute(modelName)) {
             model.addAttribute(modelName, new GenreDto());
-            model.addAttribute(showModal, "none");
         }
 
         var genreDtoList = MapperHelper.mapList(genreService.getAll(), GenreDto.class);
-        genreDtoList.sort(Comparator.comparing(GenreDto::getName, String.CASE_INSENSITIVE_ORDER));
         model.addAttribute("genres", genreDtoList);
 
         return "genre/index";
@@ -52,7 +49,7 @@ public class GenreController {
     public String create(@Valid GenreDto genreDto, final BindingResult result, final RedirectAttributes attributes) {
 
         var wrapper = ServiceWrapper.of(() ->
-                genreService.save(MapperHelper.map(genreDto, Genre.class)), result, modelName);
+                genreService.create(MapperHelper.map(genreDto, Genre.class)), result, modelName);
 
         if (wrapper.isFailure()) {
             attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + modelName, result);
@@ -79,7 +76,7 @@ public class GenreController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") int id, Model model) {
+    public String delete(@PathVariable("id") int id) {
 
         var genre = genreService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid genre Id:" + id));
         genreService.delete(genre);

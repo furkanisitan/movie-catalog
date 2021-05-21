@@ -1,6 +1,6 @@
 package com.furkanisitan.moviecatalog.entities.concretes;
 
-import com.furkanisitan.moviecatalog.entities.keys.MovieActorKey;
+import com.furkanisitan.moviecatalog.entities.ids.MovieActorId;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,14 +11,14 @@ import javax.persistence.*;
 public class MovieActor implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @EmbeddedId
-    private MovieActorKey id;
+    private MovieActorId id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("movieId")
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("actorId")
     @JoinColumn(name = "actor_id")
     private Actor actor;

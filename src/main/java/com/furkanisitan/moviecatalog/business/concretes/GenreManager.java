@@ -39,7 +39,7 @@ public class GenreManager implements GenreService {
 
     @FluentValidator(GenreValidator.class)
     @Override
-    public int save(Genre genre) {
+    public int create(Genre genre) {
 
         // unique name
         if (genreRepository.existsByName(genre.getName()))

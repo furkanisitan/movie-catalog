@@ -1,4 +1,4 @@
-package com.furkanisitan.moviecatalog.entities.keys;
+package com.furkanisitan.moviecatalog.entities.ids;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Embeddable
 @Data
-public class MovieGenreKey implements Serializable {
+public class MovieGenreId implements Serializable {
 
     @Column(name = "movie_id")
     private int movieId;

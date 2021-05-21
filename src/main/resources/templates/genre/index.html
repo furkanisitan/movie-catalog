@@ -6,11 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Genres</title>
-    <th:block layout:fragment="styles">
-        <link href="/webjars/datatables/1.10.24/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
-        <link href="/webjars/datatables-buttons/1.7.0/css/buttons.dataTables.min.css" rel="stylesheet"/>
-        <link href="/webjars/datatables-buttons/1.7.0/css/buttons.bootstrap5.min.css" rel="stylesheet"/>
-    </th:block>
 </head>
 <body>
 
@@ -21,12 +16,12 @@
 
     <table id="example" class="table table-hover">
         <thead>
-            <tr>
-                <th>Name</th>
-            </tr>
+        <tr>
+            <th>Name</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="genre : ${genres}">
+        <tr th:each="genre : ${genres}">
             <td>
                 <span class="d-flex justify-content-between">
                     <span th:text="${genre.name}"></span>
@@ -85,10 +80,6 @@
 
 
 <th:block layout:fragment="scripts">
-    <script src="/webjars/datatables/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script src="/webjars/datatables/1.10.24/js/dataTables.bootstrap5.min.js"></script>
-    <script src="/webjars/datatables-buttons/1.7.0/js/dataTables.buttons.min.js"></script>
-    <script src="/webjars/datatables-buttons/1.7.0/js/buttons.bootstrap5.min.js"></script>
 
     <script>
 
@@ -122,6 +113,9 @@
         $(document).ready(function () {
             $('#example').DataTable({
                 dom: 'Bfrtipl',
+                order: [
+                    [0, "asc"]
+                ],
                 buttons: {
                     buttons: [
                         {
@@ -143,7 +137,7 @@
 
     </script>
 
-    <script th:inline="javascript" th:if="${showModal!='none'}">
+    <script th:inline="javascript" th:if="${showModal!=null}">
 
         /*<![CDATA[*/
 

@@ -1,6 +1,6 @@
 package com.furkanisitan.moviecatalog.entities.concretes;
 
-import com.furkanisitan.moviecatalog.entities.keys.MovieGenreKey;
+import com.furkanisitan.moviecatalog.entities.ids.MovieGenreId;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class MovieGenre implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @EmbeddedId
-    private MovieGenreKey id;
+    private MovieGenreId id;
 
     @ManyToOne
     @MapsId("movieId")

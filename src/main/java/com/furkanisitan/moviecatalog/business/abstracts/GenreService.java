@@ -11,7 +11,7 @@ public interface GenreService {
 
     Optional<Genre> get(int id);
 
-    int save(Genre genre);
+    int create(Genre genre);
 
     void update(Genre genre);
 
