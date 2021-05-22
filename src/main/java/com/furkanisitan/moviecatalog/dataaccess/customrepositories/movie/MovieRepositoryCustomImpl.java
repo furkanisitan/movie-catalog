@@ -1,4 +1,4 @@
 package com.furkanisitan.moviecatalog.dataaccess.customrepositories.movie;
 
-class MovieRepositoryCustomImpl extends MovieRepositoryCustomMySql implements MovieRepositoryCustom {
+class MovieRepositoryCustomImpl extends MovieRepositoryMySql implements MovieRepositoryCustom {
 }

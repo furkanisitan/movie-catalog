@@ -55,7 +55,7 @@ public class ActorController {
     public String get(@PathVariable int id, Model model) {
 
         var actor = actorService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid actor Id:" + id));
-        var characterDetailResults = actorService.getAllCharacterDetailResultsByActorId(id);
+        var characterDetailResults = actorService.getAllCharacterDetailResults(id);
 
         model.addAttribute(actorDtoAttr, MapperHelper.map(actor, ActorDto.class));
         model.addAttribute("characterDetailResults", characterDetailResults);
@@ -87,7 +87,7 @@ public class ActorController {
 
         var actor = actorService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid actor Id:" + id));
         var movieIdNameResults = movieService.getAllMovieIdNameResult();
-        var characterDetailResults = actorService.getAllCharacterDetailResultsByActorId(id);
+        var characterDetailResults = actorService.getAllCharacterDetailResults(id);
 
         model.addAttribute(actorDtoAttr, MapperHelper.map(actor, ActorDto.class));
         model.addAttribute("movieIdNameResults", movieIdNameResults);

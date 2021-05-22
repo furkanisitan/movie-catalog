@@ -5,7 +5,7 @@ import com.furkanisitan.moviecatalog.business.validationrules.fluentvalidator.Ac
 import com.furkanisitan.moviecatalog.core.aspects.annotations.FluentValidator;
 import com.furkanisitan.moviecatalog.dataaccess.abstracts.ActorRepository;
 import com.furkanisitan.moviecatalog.dataaccess.abstracts.MovieActorRepository;
-import com.furkanisitan.moviecatalog.entities.complexresults.CharacterDetailResult;
+import com.furkanisitan.moviecatalog.entities.complexresults.CharacterDetailForActorResult;
 import com.furkanisitan.moviecatalog.entities.concretes.Actor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +32,8 @@ public class ActorManager implements ActorService {
     }
 
     @Override
-    public List<CharacterDetailResult> getAllCharacterDetailResultsByActorId(int actorId) {
-        return movieActorRepository.getAllByIdActorId(actorId);
+    public List<CharacterDetailForActorResult> getAllCharacterDetailResults(int actorId) {
+        return movieActorRepository.getAllCharacterDetailForActorResult(actorId);
     }
 
     @Override

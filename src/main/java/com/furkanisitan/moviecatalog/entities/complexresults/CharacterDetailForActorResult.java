@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CharacterDetailResult {
+public class CharacterDetailForActorResult {
 
     private int actorId;
 

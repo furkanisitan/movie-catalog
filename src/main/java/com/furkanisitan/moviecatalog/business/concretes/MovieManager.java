@@ -1,7 +1,9 @@
 package com.furkanisitan.moviecatalog.business.concretes;
 
 import com.furkanisitan.moviecatalog.business.abstracts.MovieService;
+import com.furkanisitan.moviecatalog.dataaccess.abstracts.MovieActorRepository;
 import com.furkanisitan.moviecatalog.dataaccess.abstracts.MovieRepository;
+import com.furkanisitan.moviecatalog.entities.complexresults.CharacterDetailForMovieResult;
 import com.furkanisitan.moviecatalog.entities.complexresults.MovieIdNameResult;
 import com.furkanisitan.moviecatalog.entities.complexresults.MovieListResult;
 import com.furkanisitan.moviecatalog.entities.concretes.Movie;
@@ -9,20 +11,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieManager implements MovieService {
 
     private final MovieRepository movieRepository;
+    private final MovieActorRepository movieActorRepository;
 
     @Autowired
-    public MovieManager(MovieRepository movieRepository) {
+    public MovieManager(MovieRepository movieRepository, MovieActorRepository movieActorRepository) {
         this.movieRepository = movieRepository;
+        this.movieActorRepository = movieActorRepository;
     }
 
     @Override
     public List<Movie> getAll() {
         return movieRepository.findAll();
+    }
+
+    @Override
+    public List<CharacterDetailForMovieResult> getAllCharacterDetailForMovieResult(int id) {
+        return movieActorRepository.getAllCharacterDetailForMovieResult(id);
+    }
+
+    @Override
+    public Optional<Movie> getWithGenresAndLanguages(int id) {
+        return movieRepository.getById(id);
     }
 
     @Override

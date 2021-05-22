@@ -36,7 +36,19 @@
                 </thead>
                 <tbody>
                 <tr th:each="character : ${characterDetailResults}">
-                    <td th:text="${character.movieName}"></td>
+
+                    <td>
+                    <span class="d-flex justify-content-between">
+                        <span th:text="${character.movieName}"></span>
+                        <div>
+                            <a th:href="@{/movies/{id}(id=${character.movieId})}" title="view"
+                               class="btn btn-sm text-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </div>
+                    </span>
+                    </td>
+
                     <td th:text="${character.roleName}"></td>
                 </tr>
                 </tbody>

@@ -9,12 +9,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Integer>, MovieRepositoryCustom {
 
-    @EntityGraph(attributePaths = {"genres"})
-    List<Movie> findAll();
+    @EntityGraph(attributePaths = {"genres", "languages"})
+    Optional<Movie> getById(int id);
 
     @Query("select new com.furkanisitan.moviecatalog.entities.complexresults.MovieIdNameResult(m.id, m.name) from Movie m")
     List<MovieIdNameResult> getAllSelectIdAndName();

@@ -6,7 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-class MovieRepositoryCustomMySql implements MovieRepositoryCustom {
+class MovieRepositoryMySql implements MovieRepositoryDb {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -24,5 +24,4 @@ class MovieRepositoryCustomMySql implements MovieRepositoryCustom {
         return query.getResultList();
 
     }
-
 }

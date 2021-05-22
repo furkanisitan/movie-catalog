@@ -1,6 +1,6 @@
 package com.furkanisitan.moviecatalog.business.abstracts;
 
-import com.furkanisitan.moviecatalog.entities.complexresults.CharacterDetailResult;
+import com.furkanisitan.moviecatalog.entities.complexresults.CharacterDetailForActorResult;
 import com.furkanisitan.moviecatalog.entities.concretes.Actor;
 
 import java.util.List;
@@ -10,7 +10,7 @@ public interface ActorService {
 
     List<Actor> getAll();
 
-    List<CharacterDetailResult> getAllCharacterDetailResultsByActorId(int actorId);
+    List<CharacterDetailForActorResult> getAllCharacterDetailResults(int id);
 
     Optional<Actor> get(int id);
 
