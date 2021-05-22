@@ -1,6 +1,5 @@
 package com.furkanisitan.moviecatalog.business.abstracts;
 
-import com.furkanisitan.moviecatalog.entities.complexresults.CharacterDetailForActorResult;
 import com.furkanisitan.moviecatalog.entities.complexresults.CharacterDetailForMovieResult;
 import com.furkanisitan.moviecatalog.entities.complexresults.MovieIdNameResult;
 import com.furkanisitan.moviecatalog.entities.complexresults.MovieListResult;
