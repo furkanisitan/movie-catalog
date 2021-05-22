@@ -1,17 +1,16 @@
 package com.furkanisitan.moviecatalog.entities.ids;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
-@Embeddable
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Embeddable
 public class MovieActorId implements Serializable {
 
     @Column(name = "movie_id")

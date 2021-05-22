@@ -1,14 +1,17 @@
 package com.furkanisitan.moviecatalog.entities.concretes;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "languages")
-@Data
 public class Language implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @Id

@@ -1,4 +1,4 @@
-package com.furkanisitan.moviecatalog.dataacces.abstracts;
+package com.furkanisitan.moviecatalog.dataaccess.abstracts;
 
 import com.furkanisitan.moviecatalog.entities.complexresults.CharacterDetailResult;
 import com.furkanisitan.moviecatalog.entities.concretes.MovieActor;

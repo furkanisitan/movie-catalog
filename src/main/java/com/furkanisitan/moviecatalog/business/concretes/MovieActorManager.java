@@ -5,7 +5,7 @@ import com.furkanisitan.moviecatalog.business.validationrules.fluentvalidator.Mo
 import com.furkanisitan.moviecatalog.business.validationrules.fluentvalidator.helpers.ErrorMessageHelper;
 import com.furkanisitan.moviecatalog.core.aspects.annotations.FluentValidator;
 import com.furkanisitan.moviecatalog.core.exceptions.UniquePropertyException;
-import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieActorRepository;
+import com.furkanisitan.moviecatalog.dataaccess.abstracts.MovieActorRepository;
 import com.furkanisitan.moviecatalog.entities.concretes.MovieActor;
 import com.furkanisitan.moviecatalog.entities.ids.MovieActorId;
 import com.furkanisitan.moviecatalog.webmvc.exceptions.ResourceNotFoundException;

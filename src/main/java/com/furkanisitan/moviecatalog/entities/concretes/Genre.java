@@ -1,20 +1,17 @@
 package com.furkanisitan.moviecatalog.entities.concretes;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "genres")
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "genres")
 public class Genre implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @Id

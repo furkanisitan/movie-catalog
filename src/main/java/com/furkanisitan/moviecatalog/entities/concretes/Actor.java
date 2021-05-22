@@ -1,6 +1,6 @@
 package com.furkanisitan.moviecatalog.entities.concretes;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,9 +8,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "actors")
-@Data
 public class Actor implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @Id
@@ -21,9 +24,6 @@ public class Actor implements com.furkanisitan.moviecatalog.core.entities.Entity
     @Column(name = "fullName", nullable = false, length = 100)
     private String fullName;
 
-//    @OneToMany(mappedBy = "actor")
-//    private Set<MovieActor> movieActors = new HashSet<>();
-
     @ManyToMany(mappedBy = "actors")
-    List<Movie> movies = new ArrayList<Movie>();
+    List<Movie> movies = new ArrayList<>();
 }

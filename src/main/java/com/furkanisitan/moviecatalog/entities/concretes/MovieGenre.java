@@ -1,13 +1,16 @@
 package com.furkanisitan.moviecatalog.entities.concretes;
 
 import com.furkanisitan.moviecatalog.entities.ids.MovieGenreId;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "movie_genre")
-@Data
 public class MovieGenre implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @EmbeddedId

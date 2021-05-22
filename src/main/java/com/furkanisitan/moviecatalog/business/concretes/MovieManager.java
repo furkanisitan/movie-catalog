@@ -1,8 +1,9 @@
 package com.furkanisitan.moviecatalog.business.concretes;
 
 import com.furkanisitan.moviecatalog.business.abstracts.MovieService;
-import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieRepository;
+import com.furkanisitan.moviecatalog.dataaccess.abstracts.MovieRepository;
 import com.furkanisitan.moviecatalog.entities.complexresults.MovieIdNameResult;
+import com.furkanisitan.moviecatalog.entities.complexresults.MovieListResult;
 import com.furkanisitan.moviecatalog.entities.concretes.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,12 @@ public class MovieManager implements MovieService {
     }
 
     @Override
+    public List<MovieListResult> getAllMovieListResult() {
+        return movieRepository.customGetAllMovieListResult();
+    }
+
+    @Override
     public List<MovieIdNameResult> getAllMovieIdNameResult() {
-        return movieRepository.getAllByIdSelectIdAndName();
+        return movieRepository.getAllSelectIdAndName();
     }
 }

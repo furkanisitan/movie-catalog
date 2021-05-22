@@ -1,15 +1,35 @@
 package com.furkanisitan.moviecatalog.entities.concretes;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "movies")
-@Data
+@SqlResultSetMapping(
+        name = "MovieListResult",
+        classes = {
+                @ConstructorResult(
+                        targetClass = com.furkanisitan.moviecatalog.entities.complexresults.MovieListResult.class,
+                        columns = {
+                                @ColumnResult(name = "id", type = Integer.class),
+                                @ColumnResult(name = "name", type = String.class),
+                                @ColumnResult(name = "year", type = Integer.class),
+                                @ColumnResult(name = "genres", type = String.class)
+                        }
+                )
+        }
+)
 public class Movie implements com.furkanisitan.moviecatalog.core.entities.Entity {
 
     @Id

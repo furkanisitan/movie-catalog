@@ -5,8 +5,8 @@ import com.furkanisitan.moviecatalog.business.validationrules.fluentvalidator.Ge
 import com.furkanisitan.moviecatalog.business.validationrules.fluentvalidator.helpers.ErrorMessageHelper;
 import com.furkanisitan.moviecatalog.core.aspects.annotations.FluentValidator;
 import com.furkanisitan.moviecatalog.core.exceptions.UniquePropertyException;
-import com.furkanisitan.moviecatalog.dataacces.abstracts.GenreRepository;
-import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieGenreRepository;
+import com.furkanisitan.moviecatalog.dataaccess.abstracts.GenreRepository;
+import com.furkanisitan.moviecatalog.dataaccess.abstracts.MovieGenreRepository;
 import com.furkanisitan.moviecatalog.entities.concretes.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

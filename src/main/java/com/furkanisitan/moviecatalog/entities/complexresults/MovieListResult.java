@@ -9,13 +9,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CharacterDetailResult {
+public class MovieListResult {
 
-    private int actorId;
+    private int id;
 
-    private int movieId;
+    private String name;
 
-    private String roleName;
+    private int year;
 
-    private String movieName;
+    private String genres;
 }

@@ -1,7 +1,7 @@
 package com.furkanisitan.moviecatalog.business.managers;
 
 import com.furkanisitan.moviecatalog.business.concretes.GenreManager;
-import com.furkanisitan.moviecatalog.dataacces.abstracts.GenreRepository;
+import com.furkanisitan.moviecatalog.dataaccess.abstracts.GenreRepository;
 import com.furkanisitan.moviecatalog.entities.concretes.Genre;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -35,9 +34,17 @@ public class GenreManagerUnitTests {
     @Test
     public void getAll_GenreSizeGraterThen0_ReturnListNotEmpty() {
 
+        var genre1 = new Genre();
+        genre1.setId(1);
+        genre1.setName("Drama");
+
+        var genre2 = new Genre();
+        genre2.setId(2);
+        genre2.setName("Korku");
+
         List<Genre> list = new ArrayList<>();
-        list.add(Genre.builder().id(1).name("Drama").build());
-        list.add(Genre.builder().id(2).name("Korku").build());
+        list.add(genre1);
+        list.add(genre2);
 
         when(genreRepository.findAll()).thenReturn(list);
 

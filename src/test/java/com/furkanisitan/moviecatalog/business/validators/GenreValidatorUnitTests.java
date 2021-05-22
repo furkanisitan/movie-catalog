@@ -22,7 +22,8 @@ public class GenreValidatorUnitTests {
     @Test
     public void test_NameEmptyOrNull_ThrowFluentValidatorException() {
 
-        var genre = Genre.builder().name("").build();
+        var genre = new Genre();
+        genre.setName("");
 
         Assertions.assertThrows(FluentValidatorException.class, () -> {
             ValidatorTool.validate(genreValidator, genre);

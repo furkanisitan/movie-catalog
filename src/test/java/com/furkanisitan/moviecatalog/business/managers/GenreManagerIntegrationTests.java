@@ -1,8 +1,8 @@
 package com.furkanisitan.moviecatalog.business.managers;
 
 import com.furkanisitan.moviecatalog.business.concretes.GenreManager;
-import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieGenreRepository;
-import com.furkanisitan.moviecatalog.dataacces.abstracts.MovieRepository;
+import com.furkanisitan.moviecatalog.dataaccess.abstracts.MovieGenreRepository;
+import com.furkanisitan.moviecatalog.dataaccess.abstracts.MovieRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
