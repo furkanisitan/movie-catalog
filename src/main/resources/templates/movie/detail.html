@@ -24,14 +24,14 @@
                     <td><strong>Media</strong></td>
                     <td th:text="${movie.media}"></td>
                 </tr>
-                <!--                <tr>-->
-                <!--                    <td><strong>Genres</strong></td>-->
-                <!--                    <td th:text="${#strings.listJoin(movie.genres[name], ', ')}"></td>-->
-                <!--                </tr>-->
-                <!--                <tr>-->
-                <!--                    <td><strong>Languages</strong></td>-->
-                <!--                    <td th:text="${#strings.listJoin(movie.languages[name], ', ')}"></td>-->
-                <!--                </tr>-->
+                <tr>
+                    <td><strong>Genres</strong></td>
+                    <td th:text="${#strings.listJoin(movie.genres.![name], ', ')}"></td>
+                </tr>
+                <tr>
+                    <td><strong>Languages</strong></td>
+                    <td th:text="${#strings.listJoin(movie.languages.![name], ', ')}"></td>
+                </tr>
                 </tbody>
             </table>
         </div>

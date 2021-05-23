@@ -19,4 +19,10 @@ public interface MovieService {
     List<MovieListResult> getAllMovieListResult();
 
     List<MovieIdNameResult> getAllMovieIdNameResult();
+
+    int create(Movie movie);
+
+    void update(Movie movie);
+
+    void delete(Movie movie);
 }

@@ -76,7 +76,7 @@ public class ActorController {
             attributes.addFlashAttribute(showModalAttr, "create");
         }
 
-        return "redirect:/actors/index";
+        return "redirect:/actors";
     }
 
     @GetMapping("/update/{id}")
@@ -110,7 +110,7 @@ public class ActorController {
         var actor = actorService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid actor Id:" + id));
         actorService.delete(actor);
 
-        return "redirect:/actors/index";
+        return "redirect:/actors";
     }
 
     @PostMapping("/roles/create")

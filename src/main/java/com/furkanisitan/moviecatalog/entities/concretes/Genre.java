@@ -22,6 +22,6 @@ public class Genre implements com.furkanisitan.moviecatalog.core.entities.Entity
     @Column(name = "name", nullable = false, length = 100, unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "genres")
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private Set<Movie> movies = new HashSet<>();
 }

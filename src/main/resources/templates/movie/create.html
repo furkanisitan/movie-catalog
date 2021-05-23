@@ -17,63 +17,51 @@
 
     <h2>Create Movie</h2>
 
-    <form class="row g-3">
+    <form class="row g-3" th:action="@{/movies/create}" method="post" th:object="${movie}">
 
         <div class="col-md-6">
             <label for="inpName" class="form-label">Movie name</label>
-            <input type="text" class="form-control" id="inpName">
-            <div class="invalid-feedback">
-                Looks good!
-            </div>
+            <input type="text" class="form-control" id="inpName" th:field="*{name}"
+                   th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}">
+            <div class="invalid-feedback" th:errors="*{name}"></div>
         </div>
         <div class="col-md-3">
             <label for="inpDate" class="form-label">Release date</label>
-            <input type="date" class="form-control" id="inpDate">
-            <div class="invalid-feedback">
-                Looks good!
-            </div>
+            <input type="date" class="form-control" id="inpDate" name="releaseDate" th:field="*{releaseDate}"
+                   th:classappend="${#fields.hasErrors('releaseDate') ? 'is-invalid' : ''}">
+            <div class="invalid-feedback" th:errors="*{releaseDate}"></div>
         </div>
         <div class="col-md-3">
             <label for="inpMedia" class="form-label">Media</label>
-            <input type="text" class="form-control" id="inpMedia">
-            <div class="invalid-feedback">
-                Looks good!
-            </div>
+            <input type="text" class="form-control" id="inpMedia" th:field="*{media}"
+                   th:classappend="${#fields.hasErrors('media') ? 'is-invalid' : ''}">
+            <div class="invalid-feedback" th:errors="*{media}"></div>
         </div>
 
         <div class="col-md-6">
             <label for="inpDescription" class="form-label">Description</label>
-            <textarea class="form-control" id="inpDescription"></textarea>
-            <div class="invalid-feedback">
-                Looks good!
-            </div>
+            <textarea class="form-control" id="inpDescription" th:field="*{description}"
+                      th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}"></textarea>
+            <div class="invalid-feedback" th:errors="*{description}"></div>
         </div>
 
         <div class="col-md-3">
             <label for="inpGenres" class="form-label">Genres</label>
-            <select class="selectpicker" id="inpGenres" multiple title="Choose..." data-live-search="true">
-                <option>Drama</option>
-                <option>Falan</option>
-                <option>Filan</option>
+            <select class="selectpicker" id="inpGenres" multiple title="Choose..." data-live-search="true"
+                    th:field="*{genres}" th:classappend="${#fields.hasErrors('genres') ? 'is-invalid' : ''}">
+                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
             </select>
-            <div class="invalid-feedback">
-                Please select a valid state.
-            </div>
+            <div class="invalid-feedback" th:errors="*{genres}"></div>
         </div>
 
         <div class="col-md-3">
             <label for="inpLanguages" class="form-label">Languages</label>
-            <select class="selectpicker" id="inpLanguages" multiple title="Choose..."
-                    data-live-search="true">
-                <option>English</option>
-                <option>Falan</option>
-                <option>Filan</option>
+            <select class="selectpicker" id="inpLanguages" multiple title="Choose..." data-live-search="true"
+                    th:field="*{languages}" th:classappend="${#fields.hasErrors('languages') ? 'is-invalid' : ''}">
+                <option th:each="language : ${languages}" th:value="${language.id}" th:text="${language.name}"></option>
             </select>
-            <div class="invalid-feedback">
-                Please select a valid state.
-            </div>
+            <div class="invalid-feedback" th:errors="*{languages}"></div>
         </div>
-
 
         <div class="col-12">
             <button class="btn btn-secondary" type="reset">Clear</button>

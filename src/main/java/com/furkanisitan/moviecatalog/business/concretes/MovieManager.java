@@ -1,6 +1,8 @@
 package com.furkanisitan.moviecatalog.business.concretes;
 
 import com.furkanisitan.moviecatalog.business.abstracts.MovieService;
+import com.furkanisitan.moviecatalog.business.validationrules.fluentvalidator.MovieValidator;
+import com.furkanisitan.moviecatalog.core.aspects.annotations.FluentValidator;
 import com.furkanisitan.moviecatalog.dataaccess.abstracts.MovieActorRepository;
 import com.furkanisitan.moviecatalog.dataaccess.abstracts.MovieRepository;
 import com.furkanisitan.moviecatalog.entities.complexresults.CharacterDetailForMovieResult;
@@ -48,5 +50,22 @@ public class MovieManager implements MovieService {
     @Override
     public List<MovieIdNameResult> getAllMovieIdNameResult() {
         return movieRepository.getAllSelectIdAndName();
+    }
+
+    @FluentValidator(MovieValidator.class)
+    @Override
+    public int create(Movie movie) {
+        return movieRepository.save(movie).getId();
+    }
+
+    @FluentValidator(MovieValidator.class)
+    @Override
+    public void update(Movie movie) {
+        movieRepository.save(movie);
+    }
+
+    @Override
+    public void delete(Movie movie) {
+
     }
 }

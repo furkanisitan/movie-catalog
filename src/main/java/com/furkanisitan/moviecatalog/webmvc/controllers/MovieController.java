@@ -6,6 +6,7 @@ import com.furkanisitan.moviecatalog.business.abstracts.LanguageService;
 import com.furkanisitan.moviecatalog.business.abstracts.MovieService;
 import com.furkanisitan.moviecatalog.entities.concretes.Movie;
 import com.furkanisitan.moviecatalog.webmvc.exceptions.ResourceNotFoundException;
+import com.furkanisitan.moviecatalog.webmvc.utils.ServiceWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +15,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("movies")
 public class MovieController {
+
+    private static final String movieAttr = "movie";
+
 
     private final MovieService movieService;
     private final GenreService genreService;
@@ -47,14 +52,17 @@ public class MovieController {
         var movie = movieService.getWithGenresAndLanguages(id).orElseThrow(() -> new ResourceNotFoundException("Invalid movie Id:" + id));
         var characterDetailResults = movieService.getAllCharacterDetailForMovieResult(id);
 
-        model.addAttribute("movie", movie);
+        model.addAttribute(movieAttr, movie);
         model.addAttribute("characterDetailResults", characterDetailResults);
 
         return "movie/detail";
     }
 
     @GetMapping("/create")
-    public String create(Movie movie, Model model) {
+    public String create(Model model) {
+
+        if (!model.containsAttribute(movieAttr))
+            model.addAttribute(movieAttr, new Movie());
 
         model.addAttribute("genres", genreService.getAll());
         model.addAttribute("languages", languageService.getAll());
@@ -63,12 +71,16 @@ public class MovieController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid Movie movie, Model model, BindingResult result) {
+    public String create(@Valid Movie movie, BindingResult result, RedirectAttributes attributes) {
 
-        if (result.hasErrors()) {
-            return "movie/create";
+        var wrapper = ServiceWrapper.of(() -> movieService.create(movie), result, "movie");
+
+        if (wrapper.isFailure()) {
+            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + movieAttr, result);
+            attributes.addFlashAttribute(movieAttr, movie);
+            return "redirect:/movies/create";
         }
 
-        return "redirect:movies/update/" + movie.getId();
+        return "redirect:/movies";
     }
 }
