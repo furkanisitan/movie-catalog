@@ -52,6 +52,11 @@ public class MovieManager implements MovieService {
         return movieRepository.getAllSelectIdAndName();
     }
 
+    @Override
+    public Optional<Movie> get(int id) {
+        return movieRepository.getById(id);
+    }
+
     @FluentValidator(MovieValidator.class)
     @Override
     public int create(Movie movie) {
@@ -66,6 +71,6 @@ public class MovieManager implements MovieService {
 
     @Override
     public void delete(Movie movie) {
-
+        movieRepository.delete(movie);
     }
 }

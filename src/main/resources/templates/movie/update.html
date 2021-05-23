@@ -5,7 +5,7 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Create Movie</title>
+    <title>Update Movie</title>
 
     <th:block layout:fragment="contents">
         <link href="/webjars/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" rel="stylesheet">
@@ -15,9 +15,8 @@
 
 <div layout:fragment="content">
 
-    <h2>Create Movie</h2>
-
-    <form class="row g-3" th:action="@{/movies/create}" method="post" th:object="${movie}">
+    <h2>Update Movie</h2>
+    <form class="row g-3" th:action="@{/movies/update/{id}(id=${movie.id})}" method="post" th:object="${movie}">
 
         <div class="col-md-6">
             <label for="inpName" class="form-label">Movie name</label>
@@ -48,8 +47,8 @@
         <div class="col-md-3">
             <label for="inpGenres" class="form-label">Genres</label>
             <select class="selectpicker" id="inpGenres" multiple title="Choose..." data-live-search="true"
-                    th:field="*{genres}" th:classappend="${#fields.hasErrors('genres') ? 'is-invalid' : ''}">
-                <option th:each="genre : ${genres}" th:value="${genre.id}" th:text="${genre.name}"></option>
+                    name="genres" th:classappend="${#fields.hasErrors('genres') ? 'is-invalid' : ''}">
+                <option th:each="genre : ${genres}" th:selected="${movie.genres.![id].contains(genre.id)}" th:value="${genre.id}" th:text="${genre.name}"></option>
             </select>
             <div class="invalid-feedback" th:errors="*{genres}"></div>
         </div>
@@ -57,22 +56,61 @@
         <div class="col-md-3">
             <label for="inpLanguages" class="form-label">Languages</label>
             <select class="selectpicker" id="inpLanguages" multiple title="Choose..." data-live-search="true"
-                    th:field="*{languages}" th:classappend="${#fields.hasErrors('languages') ? 'is-invalid' : ''}">
-                <option th:each="language : ${languages}" th:value="${language.id}" th:text="${language.name}"></option>
+                    name="languages" th:classappend="${#fields.hasErrors('languages') ? 'is-invalid' : ''}">
+                <option th:each="language : ${languages}" th:selected="${movie.languages.![id].contains(language.id)}" th:value="${language.id}" th:text="${language.name}"></option>
             </select>
             <div class="invalid-feedback" th:errors="*{languages}"></div>
         </div>
 
         <div class="col-12">
-            <button class="btn btn-secondary" type="reset">Clear</button>
+            <button class="btn btn-secondary" type="button" th:onclick="|window.location.href='/movies/update/${movie.id}'|">Reset</button>
             <button class="btn btn-primary" type="submit">Submit</button>
         </div>
     </form>
 
+    <hr>
+
+    <h3>Manage Actors</h3>
+    <table id="example" class="table table-hover">
+        <thead>
+        <tr>
+            <th>Actor Name</th>
+            <th>Role Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="character : ${characterDetailResults}">
+            <td th:text="${character.actorName}"></td>
+
+            <td>
+                <span class="d-flex justify-content-between">
+
+                    <span th:text="${character.roleName}"></span>
+
+                    <div>
+                        <button class="btn btn-sm text-warning" data-toggle="tooltip" data-placement="top"
+                                title="edit"
+                                th:attr="onclick=|updateRole('${character.movieId}','${character.actorId}', '${character.roleName}')|">
+                            <i class="fas fa-edit"></i>
+                        </button>
+
+                        <a th:href="@{/actors/roles/delete(actorId=${character.actorId}, movieId=${character.movieId})}"
+                           title="delete" class="btn btn-sm text-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
+
+                    </div>
+
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
 </div>
 
 <th:block layout:fragment="scripts">
-
 
     <script src="/webjars/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
 

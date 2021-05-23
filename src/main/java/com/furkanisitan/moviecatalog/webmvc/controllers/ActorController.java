@@ -18,8 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("actors")
 public class ActorController {
@@ -64,7 +62,7 @@ public class ActorController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid final ActorDto actorDto, final BindingResult result, final RedirectAttributes attributes) {
+    public String create(ActorDto actorDto, BindingResult result, RedirectAttributes attributes) {
 
         actorDto.setId(0);
 
@@ -97,7 +95,7 @@ public class ActorController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@Valid final ActorDto actorDto, final BindingResult result) {
+    public String update(ActorDto actorDto, BindingResult result) {
 
         ServiceWrapper.of(() -> actorService.update(MapperHelper.map(actorDto, Actor.class)), result, actorDtoAttr);
 
@@ -113,8 +111,9 @@ public class ActorController {
         return "redirect:/actors";
     }
 
+    //#region Roles
     @PostMapping("/roles/create")
-    public String createRole(@Valid final CharacterDto characterDto, final BindingResult result, final RedirectAttributes attributes) {
+    public String createRole(CharacterDto characterDto, BindingResult result, RedirectAttributes attributes) {
 
         var wrapper = ServiceWrapper.of(() -> movieActorService.createForActor(MapperHelper.map(characterDto, MovieActor.class)), result, characterDtoAttr);
 
@@ -127,7 +126,7 @@ public class ActorController {
     }
 
     @PostMapping("/roles/update")
-    public String updateRole(@Valid final CharacterDto characterDto, final BindingResult result, final RedirectAttributes attributes) {
+    public String updateRole(CharacterDto characterDto, BindingResult result, RedirectAttributes attributes) {
 
         var wrapper = ServiceWrapper.of(() -> movieActorService.update(MapperHelper.map(characterDto, MovieActor.class)), result, "characterDto");
 
@@ -149,5 +148,5 @@ public class ActorController {
 
         return "redirect:/actors/update/" + actorId;
     }
-
+    //#endregion
 }

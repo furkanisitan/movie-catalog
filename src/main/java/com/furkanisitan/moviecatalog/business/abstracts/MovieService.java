@@ -20,6 +20,8 @@ public interface MovieService {
 
     List<MovieIdNameResult> getAllMovieIdNameResult();
 
+    Optional<Movie> get(int id);
+
     int create(Movie movie);
 
     void update(Movie movie);

@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("movies")
 public class MovieController {
@@ -71,7 +69,7 @@ public class MovieController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid Movie movie, BindingResult result, RedirectAttributes attributes) {
+    public String create(Movie movie, BindingResult result, RedirectAttributes attributes) {
 
         var wrapper = ServiceWrapper.of(() -> movieService.create(movie), result, "movie");
 
@@ -80,6 +78,35 @@ public class MovieController {
             attributes.addFlashAttribute(movieAttr, movie);
             return "redirect:/movies/create";
         }
+
+        return "redirect:/movies/update/" + movie.getId();
+    }
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable("id") int id, Model model) {
+
+        var movie = movieService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid movie Id:" + id));
+
+        model.addAttribute(movieAttr, movie);
+        model.addAttribute("genres", genreService.getAll());
+        model.addAttribute("languages", languageService.getAll());
+        model.addAttribute("characterDetailResults", movieService.getAllCharacterDetailForMovieResult(id));
+
+        return "movie/update";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(Movie movie, BindingResult result, RedirectAttributes attributes) {
+
+        var wrapper = ServiceWrapper.of(() -> movieService.update(movie), result, "movie");
+        return wrapper.isFailure() ? "movie/update" : "redirect:/movies";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") int id) {
+
+        var actor = movieService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid movie Id:" + id));
+        movieService.delete(actor);
 
         return "redirect:/movies";
     }

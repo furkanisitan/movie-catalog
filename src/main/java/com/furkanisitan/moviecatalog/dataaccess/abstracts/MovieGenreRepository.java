@@ -15,4 +15,7 @@ public interface MovieGenreRepository extends JpaRepository<MovieGenre, MovieGen
 
     @Transactional
     void deleteAllByIdGenreId(int genreId);
+
+    @Transactional
+    void deleteAllByIdMovieId(int movieId);
 }

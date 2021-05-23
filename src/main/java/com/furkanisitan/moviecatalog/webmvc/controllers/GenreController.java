@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
-
 @Controller
 @RequestMapping("genres")
 public class GenreController {
@@ -45,7 +43,7 @@ public class GenreController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid final GenreDto genreDto, final BindingResult result, final RedirectAttributes attributes) {
+    public String create(GenreDto genreDto, BindingResult result, RedirectAttributes attributes) {
 
         genreDto.setId(0);
 
@@ -61,7 +59,7 @@ public class GenreController {
     }
 
     @PostMapping("/update")
-    public String update(@Valid final GenreDto genreDto, final BindingResult result, final RedirectAttributes attributes) {
+    public String update(GenreDto genreDto, BindingResult result, RedirectAttributes attributes) {
 
         var wrapper = ServiceWrapper.of(() -> genreService.update(MapperHelper.map(genreDto, Genre.class)), result, genreDtoAttr);
 

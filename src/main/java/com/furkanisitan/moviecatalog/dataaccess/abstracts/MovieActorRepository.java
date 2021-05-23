@@ -24,4 +24,7 @@ public interface MovieActorRepository extends JpaRepository<MovieActor, MovieAct
 
     @Transactional
     void deleteAllByIdActorId(int actorId);
+
+    @Transactional
+    void deleteAllByIdMovieId(int movieId);
 }
