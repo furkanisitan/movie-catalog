@@ -75,12 +75,12 @@ public class ActorController {
     @GetMapping("/update/{id}")
     public String update(@PathVariable("id") int id, Model model) {
 
-        if (!model.containsAttribute(Constants.ModelAttr.CHARACTER_DTO))
-            model.addAttribute(Constants.ModelAttr.CHARACTER_DTO, new CharacterDto());
-
         var actor = actorService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid actor Id:" + id));
         var movieIdNameResults = movieService.getAllMovieIdNameResult();
         var characterDetailResults = actorService.getAllCharacterDetailResults(id);
+
+        if (!model.containsAttribute(Constants.ModelAttr.CHARACTER_DTO))
+            model.addAttribute(Constants.ModelAttr.CHARACTER_DTO, new CharacterDto());
 
         model.addAttribute(Constants.ModelAttr.ACTOR_DTO, MapperHelper.map(actor, ActorDto.class));
         model.addAttribute("movieIdNameResults", movieIdNameResults);

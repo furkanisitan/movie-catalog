@@ -1,6 +1,7 @@
 package com.furkanisitan.moviecatalog.webmvc.controllers;
 
 
+import com.furkanisitan.moviecatalog.business.abstracts.ActorService;
 import com.furkanisitan.moviecatalog.business.abstracts.GenreService;
 import com.furkanisitan.moviecatalog.business.abstracts.LanguageService;
 import com.furkanisitan.moviecatalog.business.abstracts.MovieService;
@@ -24,12 +25,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MovieController {
 
     private final MovieService movieService;
+    private final ActorService actorService;
     private final GenreService genreService;
     private final LanguageService languageService;
 
     @Autowired
-    public MovieController(MovieService movieService, GenreService genreService, LanguageService languageService) {
+    public MovieController(MovieService movieService, ActorService actorService, GenreService genreService, LanguageService languageService) {
         this.movieService = movieService;
+        this.actorService = actorService;
         this.genreService = genreService;
         this.languageService = languageService;
     }
@@ -86,11 +89,14 @@ public class MovieController {
 
         var movie = movieService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid movie Id:" + id));
 
+        if (!model.containsAttribute(Constants.ModelAttr.CHARACTER_DTO))
+            model.addAttribute(Constants.ModelAttr.CHARACTER_DTO, new CharacterDto());
+
         model.addAttribute(Constants.ModelAttr.MOVIE, movie);
+        model.addAttribute("actors", actorService.getAll());
         model.addAttribute("genres", genreService.getAll());
         model.addAttribute("languages", languageService.getAll());
         model.addAttribute("characterDetailResults", movieService.getAllCharacterDetailForMovieResult(id));
-        model.addAttribute(Constants.ModelAttr.CHARACTER_DTO, new CharacterDto());
 
         return "movie/update";
     }

@@ -32,6 +32,11 @@ public class ActorManager implements ActorService {
     }
 
     @Override
+    public List<Actor> getAllByMovieId(int movieId) {
+        return actorRepository.findByMovies_Id(movieId);
+    }
+
+    @Override
     public List<CharacterDetailForActorResult> getAllCharacterDetailResults(int actorId) {
         return movieActorRepository.getAllCharacterDetailForActorResult(actorId);
     }

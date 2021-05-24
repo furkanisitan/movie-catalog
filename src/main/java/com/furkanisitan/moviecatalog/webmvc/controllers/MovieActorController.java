@@ -33,6 +33,7 @@ public class MovieActorController {
         if (wrapper.isFailure()) {
             attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + Constants.ModelAttr.CHARACTER_DTO, result);
             attributes.addFlashAttribute(Constants.ModelAttr.CHARACTER_DTO, characterDto);
+            attributes.addFlashAttribute(Constants.ModelAttr.SHOW_MODAL, "createRole");
         }
 
         return redirectController.equals("movie") ?

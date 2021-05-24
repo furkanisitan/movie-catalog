@@ -10,6 +10,8 @@ public interface ActorService {
 
     List<Actor> getAll();
 
+    List<Actor> getAllByMovieId(int movieId);
+
     List<CharacterDetailForActorResult> getAllCharacterDetailResults(int id);
 
     Optional<Actor> get(int id);

@@ -21,7 +21,6 @@ public interface MovieActorRepository extends JpaRepository<MovieActor, MovieAct
     @Query("select new com.furkanisitan.moviecatalog.entities.complexresults.CharacterDetailForMovieResult(ma.id.actorId, ma.id.movieId, ma.roleName, a.fullName) from MovieActor ma join Actor a on a.id = ma.id.actorId where ma.id.movieId = :movieId")
     List<CharacterDetailForMovieResult> getAllCharacterDetailForMovieResult(@Param("movieId") int movieId);
 
-
     @Transactional
     void deleteAllByIdActorId(int actorId);
 

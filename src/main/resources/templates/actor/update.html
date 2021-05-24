@@ -146,19 +146,19 @@
 
         $(document).ready(function () {
 
-            $('#example').DataTable({
-                dom: 'frtipl',
-                order: [
-                    [0, "asc"]
-                ]
-            });
-
             let showModalAttr = /*[[${showModal}]]*/ 'default';
 
             if (showModalAttr && showModalAttr !== 'default') {
                 formActor.find('.is-invalid').removeClass('is-invalid');
                 modal.modal('show');
             }
+
+            $('#example').DataTable({
+                dom: 'frtipl',
+                order: [
+                    [0, "asc"]
+                ]
+            });
         });
 
     </script>

@@ -1,5 +1,6 @@
 package com.furkanisitan.moviecatalog.business.concretes;
 
+import com.furkanisitan.moviecatalog.business.abstracts.ActorService;
 import com.furkanisitan.moviecatalog.business.abstracts.MovieService;
 import com.furkanisitan.moviecatalog.business.validationrules.fluentvalidator.MovieValidator;
 import com.furkanisitan.moviecatalog.core.aspects.annotations.FluentValidator;
@@ -12,6 +13,7 @@ import com.furkanisitan.moviecatalog.entities.concretes.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,11 +22,13 @@ public class MovieManager implements MovieService {
 
     private final MovieRepository movieRepository;
     private final MovieActorRepository movieActorRepository;
+    private final ActorService actorService;
 
     @Autowired
-    public MovieManager(MovieRepository movieRepository, MovieActorRepository movieActorRepository) {
+    public MovieManager(MovieRepository movieRepository, MovieActorRepository movieActorRepository, ActorService actorService) {
         this.movieRepository = movieRepository;
         this.movieActorRepository = movieActorRepository;
+        this.actorService = actorService;
     }
 
     @Override
@@ -66,6 +70,8 @@ public class MovieManager implements MovieService {
     @FluentValidator(MovieValidator.class)
     @Override
     public void update(Movie movie) {
+        var actors = actorService.getAllByMovieId(movie.getId());
+        movie.setActors(new HashSet<>(actors));
         movieRepository.save(movie);
     }
 
