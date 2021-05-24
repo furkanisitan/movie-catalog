@@ -5,7 +5,9 @@ import com.furkanisitan.moviecatalog.business.abstracts.GenreService;
 import com.furkanisitan.moviecatalog.business.abstracts.LanguageService;
 import com.furkanisitan.moviecatalog.business.abstracts.MovieService;
 import com.furkanisitan.moviecatalog.entities.concretes.Movie;
+import com.furkanisitan.moviecatalog.webmvc.dtos.actor.CharacterDto;
 import com.furkanisitan.moviecatalog.webmvc.exceptions.ResourceNotFoundException;
+import com.furkanisitan.moviecatalog.webmvc.utils.Constants;
 import com.furkanisitan.moviecatalog.webmvc.utils.ServiceWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping("movies")
 public class MovieController {
-
-    private static final String movieAttr = "movie";
-
 
     private final MovieService movieService;
     private final GenreService genreService;
@@ -50,7 +49,7 @@ public class MovieController {
         var movie = movieService.getWithGenresAndLanguages(id).orElseThrow(() -> new ResourceNotFoundException("Invalid movie Id:" + id));
         var characterDetailResults = movieService.getAllCharacterDetailForMovieResult(id);
 
-        model.addAttribute(movieAttr, movie);
+        model.addAttribute(Constants.ModelAttr.MOVIE, movie);
         model.addAttribute("characterDetailResults", characterDetailResults);
 
         return "movie/detail";
@@ -59,8 +58,8 @@ public class MovieController {
     @GetMapping("/create")
     public String create(Model model) {
 
-        if (!model.containsAttribute(movieAttr))
-            model.addAttribute(movieAttr, new Movie());
+        if (!model.containsAttribute(Constants.ModelAttr.MOVIE))
+            model.addAttribute(Constants.ModelAttr.MOVIE, new Movie());
 
         model.addAttribute("genres", genreService.getAll());
         model.addAttribute("languages", languageService.getAll());
@@ -74,8 +73,8 @@ public class MovieController {
         var wrapper = ServiceWrapper.of(() -> movieService.create(movie), result, "movie");
 
         if (wrapper.isFailure()) {
-            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + movieAttr, result);
-            attributes.addFlashAttribute(movieAttr, movie);
+            attributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + Constants.ModelAttr.MOVIE, result);
+            attributes.addFlashAttribute(Constants.ModelAttr.MOVIE, movie);
             return "redirect:/movies/create";
         }
 
@@ -87,10 +86,11 @@ public class MovieController {
 
         var movie = movieService.get(id).orElseThrow(() -> new ResourceNotFoundException("Invalid movie Id:" + id));
 
-        model.addAttribute(movieAttr, movie);
+        model.addAttribute(Constants.ModelAttr.MOVIE, movie);
         model.addAttribute("genres", genreService.getAll());
         model.addAttribute("languages", languageService.getAll());
         model.addAttribute("characterDetailResults", movieService.getAllCharacterDetailForMovieResult(id));
+        model.addAttribute(Constants.ModelAttr.CHARACTER_DTO, new CharacterDto());
 
         return "movie/update";
     }
@@ -99,7 +99,7 @@ public class MovieController {
     public String update(Movie movie, BindingResult result, RedirectAttributes attributes) {
 
         var wrapper = ServiceWrapper.of(() -> movieService.update(movie), result, "movie");
-        return wrapper.isFailure() ? "movie/update" : "redirect:/movies";
+        return wrapper.isFailure() ? "movie/update" : "redirect:/movies/update/" + movie.getId();
     }
 
     @GetMapping("/delete/{id}")

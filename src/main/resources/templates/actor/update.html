@@ -12,9 +12,9 @@
 <div layout:fragment="content">
 
     <div class="row">
+
         <div class="col-md-6">
             <h3>Update Actor</h3>
-
             <form th:action="@{/actors/update/{id}(id=${actorDto.id})}" method="post" th:object="${actorDto}">
                 <div class="card">
                     <div class="card-body">
@@ -30,7 +30,8 @@
 
                         <div class="d-flex justify-content-end">
 
-                            <a th:href="@{/actors/delete/{id}(id=${actorDto.id})}" class="card-link btn btn-sm btn-danger">
+                            <a th:href="@{/actors/delete/{id}(id=${actorDto.id})}"
+                               class="card-link btn btn-sm btn-danger">
                                 Remove
                             </a>
                             <button type="reset" class="card-link btn btn-sm btn-secondary">Reset</button>
@@ -44,8 +45,8 @@
 
         <div class="col-md-6">
             <h3>Create Actor Role</h3>
-
-            <form id="formActor" th:action="@{/actors/roles/create}" method="post" th:object="${characterDto}">
+            <form id="formActor" th:action="@{/movie-actor/create(redirectController='actor')}" method="post"
+                  th:object="${characterDto}">
 
                 <div class="card">
                     <div class="card-body">
@@ -105,7 +106,7 @@
                             <i class="fas fa-edit"></i>
                         </button>
 
-                        <a th:href="@{/actors/roles/delete(actorId=${character.actorId}, movieId=${character.movieId})}"
+                        <a th:href="@{/movie-actor/delete/{movieId}/{actorId}(movieId=${character.movieId}, actorId=${character.actorId}, redirectController='actor')}"
                            title="delete" class="btn btn-sm text-danger">
                             <i class="fas fa-trash"></i>
                         </a>
@@ -118,38 +119,8 @@
         </tbody>
     </table>
 
-    <!-- Role Update Modal -->
-    <div class="modal fade" id="modalRole" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="formCharacter" th:action="@{/actors/roles/update}" method="post" th:object="${characterDto}">
-
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Update Role Name</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-
-                        <input id="characterMovieId" th:field="*{movieId}" type="hidden" th:value="0">
-                        <input id="characterActorId" th:field="*{actorId}" type="hidden" th:value="0">
-
-                        <div class="form-floating mb-3">
-                            <input id="characterRoleName" th:field="*{roleName}" type="text" class="form-control"
-                                   th:classappend="${#fields.hasErrors('roleName') ? 'is-invalid' : ''}"
-                                   placeholder="Enter a role name">
-                            <label for="characterRoleName">Enter a role name</label>
-                            <div class="invalid-feedback" th:errors="*{roleName}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+    <!-- Update Role Modal -->
+    <th:block th:replace="fragments/movie-actor/update-role-modal.html::modal(${characterDto}, 'actor')"/>
 
 </div>
 
@@ -175,19 +146,19 @@
 
         $(document).ready(function () {
 
+            $('#example').DataTable({
+                dom: 'frtipl',
+                order: [
+                    [0, "asc"]
+                ]
+            });
+
             let showModalAttr = /*[[${showModal}]]*/ 'default';
 
             if (showModalAttr && showModalAttr !== 'default') {
                 formActor.find('.is-invalid').removeClass('is-invalid');
                 modal.modal('show');
             }
-
-            $('#example').DataTable({
-                dom: 'Bfrtipl',
-                order: [
-                    [0, "asc"]
-                ]
-            });
         });
 
     </script>
