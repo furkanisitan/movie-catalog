@@ -55,6 +55,8 @@
         <div class="modal-dialog">
             <form id="formActor" th:action="@{/actors/create}" method="post" th:object="${actorDto}">
 
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add Actor</h5>

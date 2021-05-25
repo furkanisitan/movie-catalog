@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<footer th:fragment="footer" th:align="center">
+<footer th:fragment="footer" th:align="center" class="mt-auto mb-2">
     &copy; <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy')}">2021</span>
     <span>Movie Catalog</span>
 </footer>

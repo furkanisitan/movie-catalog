@@ -13,6 +13,8 @@
         <form id="formCharacter" th:action="@{/movie-actor/update(redirectController=${__${redirectController}__})}"
               method="post" th:object="${characterDto}">
 
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Update Role Name</h5>

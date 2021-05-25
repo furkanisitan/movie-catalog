@@ -16,6 +16,9 @@
         <div class="col-md-6">
             <h3>Update Actor</h3>
             <form th:action="@{/actors/update/{id}(id=${actorDto.id})}" method="post" th:object="${actorDto}">
+
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
                 <div class="card">
                     <div class="card-body">
 
@@ -28,14 +31,20 @@
                             <div class="invalid-feedback" th:errors="*{fullName}"></div>
                         </div>
 
-                        <div class="d-flex justify-content-end">
+                        <div class="d-flex justify-content-between">
 
-                            <a th:href="@{/actors/delete/{id}(id=${actorDto.id})}"
-                               class="card-link btn btn-sm btn-danger">
-                                Remove
-                            </a>
-                            <button type="reset" class="card-link btn btn-sm btn-secondary">Reset</button>
-                            <button type="submit" class="card-link btn btn-sm btn-primary">Submit</button>
+                            <div>
+                                <button type="reset" class="card-link btn btn-sm btn-secondary">Reset</button>
+                                <button type="submit" class="card-link btn btn-sm btn-primary">Submit</button>
+                            </div>
+
+                            <div>
+                                <a th:href="@{/actors/delete/{id}(id=${actorDto.id})}"
+                                   class="card-link btn btn-sm btn-danger">
+                                    Remove
+                                </a>
+                            </div>
+
                         </div>
 
                     </div>
@@ -47,6 +56,8 @@
             <h3>Create Actor Role</h3>
             <form id="formActor" th:action="@{/movie-actor/create(redirectController='actor')}" method="post"
                   th:object="${characterDto}">
+
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
                 <div class="card">
                     <div class="card-body">
@@ -148,7 +159,7 @@
 
             let showModalAttr = /*[[${showModal}]]*/ 'default';
 
-            if (showModalAttr && showModalAttr !== 'default') {
+            if (showModalAttr === 'updateRole') {
                 formActor.find('.is-invalid').removeClass('is-invalid');
                 modal.modal('show');
             }
