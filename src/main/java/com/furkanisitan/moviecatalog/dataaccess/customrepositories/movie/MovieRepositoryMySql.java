@@ -15,13 +15,12 @@ class MovieRepositoryMySql implements MovieRepositoryDb {
     public List<MovieListResult> customGetAllMovieListResult() {
 
         var query = entityManager.createNativeQuery(
-                "select m.id, m.name, YEAR(m.release_date) as year, group_concat(g.name separator ', ') as genres from movie_genre " +
-                        "join movies m on m.id = movie_genre.movie_id " +
-                        "join genres g on g.id = movie_genre.genre_id " +
+                "select m.id, m.name, YEAR(m.release_date) as year, group_concat(g.name separator ', ') as genres from movies m " +
+                        "left outer join movie_genre mg on mg.movie_id = m.id " +
+                        "left outer join genres g on g.id = mg.genre_id " +
                         "group by m.id, m.name, YEAR(m.release_date)",
                 "MovieListResult");
 
         return query.getResultList();
-
     }
 }
