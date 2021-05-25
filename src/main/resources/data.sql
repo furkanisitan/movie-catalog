@@ -68,3 +68,14 @@ INSERT INTO movie_language (movie_id, language_id) VALUES (1, 3);
 INSERT INTO movie_language (movie_id, language_id) VALUES (2, 3);
 INSERT INTO movie_language (movie_id, language_id) VALUES (3, 3);
 INSERT INTO movie_language (movie_id, language_id) VALUES (4, 3);
+
+-- password: 1234
+INSERT INTO users (id, username, full_name, password) VALUES (1, 'admin', 'Admin Admin', '$2a$10$7lh/hUxuYu9pX5JXLKu9g.b0CvtuHQHPvNdqi8RgucTnq7xUk58lq');
+INSERT INTO users (id, username, full_name, password) VALUES (2, 'user', 'User User', '$2a$10$7lh/hUxuYu9pX5JXLKu9g.b0CvtuHQHPvNdqi8RgucTnq7xUk58lq');
+
+INSERT INTO roles (id, name) VALUES (1, 'ROLE_ADMIN');
+INSERT INTO roles (id, name) VALUES (2, 'ROLE_USER');
+
+INSERT INTO user_role (user_id, role_id) VALUES (1, 1);
+INSERT INTO user_role (user_id, role_id) VALUES (1, 2);
+INSERT INTO user_role (user_id, role_id) VALUES (2, 2);

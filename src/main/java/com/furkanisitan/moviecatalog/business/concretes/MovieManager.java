@@ -11,8 +11,10 @@ import com.furkanisitan.moviecatalog.entities.complexresults.MovieIdNameResult;
 import com.furkanisitan.moviecatalog.entities.complexresults.MovieListResult;
 import com.furkanisitan.moviecatalog.entities.concretes.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -75,6 +77,7 @@ public class MovieManager implements MovieService {
         movieRepository.save(movie);
     }
 
+    @RolesAllowed("ADMIN")
     @Override
     public void delete(Movie movie) {
         movieRepository.delete(movie);

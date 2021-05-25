@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootTest(properties = "spring.profiles.active=test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -18,8 +19,8 @@ public class DemoTest {
     @Test
     public void test() {
 
-        var actors = actorRepository.findByMovies_Id(2);
-
+        var encoder = new BCryptPasswordEncoder();
+        System.out.println(encoder.encode("1234"));
 
     }
 }
