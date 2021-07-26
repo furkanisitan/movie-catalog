@@ -4,7 +4,10 @@ import com.furkanisitan.moviecatalog.entities.ids.CharacterId;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Table(name = "characters")
 @Entity
@@ -15,19 +18,6 @@ public class Character {
     @EmbeddedId
     private CharacterId id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("movieId")
-    @JoinColumn(name = "movie_id")
-    private Movie movie;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("actorId")
-    @JoinColumn(name = "actor_id")
-    private Actor actor;
-
     @Column(name = "name", nullable = false, length = 50)
     private String name;
-
-    @Column(name = "description")
-    private String description;
 }
